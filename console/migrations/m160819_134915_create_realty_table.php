@@ -5,7 +5,7 @@
     /**
      * Handles the creation for table `realty`.
      */
-    class m160819_134935_create_realty_table extends Migration{
+    class m160819_134915_create_realty_table extends Migration{
         /**
          * @inheritdoc
          */

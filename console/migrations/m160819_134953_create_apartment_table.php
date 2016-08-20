@@ -5,7 +5,7 @@
     /**
      * Handles the creation for table 'apartment'.
      */
-    class m160819_134753_create_apartment_table extends Migration{
+    class m160819_134953_create_apartment_table extends Migration{
         /**
          * @inheritdoc
          */
@@ -33,6 +33,8 @@
                 'cover'             => $this->string(255),
                 'photos'            => $this->text()
             ]);
+
+            $this->addForeignKey('nad_apartment_ibfk_1', '{{%apartment}}', 'realty_id', '{{%realty}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**

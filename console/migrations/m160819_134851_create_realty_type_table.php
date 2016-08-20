@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `realty_type`.
  */
-class m160819_134951_create_realty_type_table extends Migration
+class m160819_134851_create_realty_type_table extends Migration
 {
     /**
      * @inheritdoc

@@ -13,7 +13,6 @@
             $this->createTable('{{%house}}', [
                 'id'                    => $this->primaryKey(),
                 'realty_id'             => $this->integer()
-                                                ->unique()
                                                 ->defaultValue(null),
                 'house_area'            => $this->float()
                                                 ->notNull(),

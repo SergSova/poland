@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation for table `service_type`.
  */
-class m160819_135007_create_service_type_table extends Migration
+class m160819_134847_create_service_type_table extends Migration
 {
     /**
      * @inheritdoc
