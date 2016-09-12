@@ -53,7 +53,8 @@
 mapInit({$mapConfig});
 showMarkers({$markersData});
 JS;
-    $this->registerJs($script);
+
+    $this->registerJs($script,3);
 
     $housePriceInterval = Search::getPriceInterval(1);
     $apartmentPriceInterval = Search::getPriceInterval(2);
