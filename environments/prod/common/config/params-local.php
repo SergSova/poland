@@ -6,8 +6,7 @@ return [
     'user.passwordResetTokenExpire' => 3600,
     'mapConfig'=>[
         'center' => [
-            'lat' => 50,
-            'lng' => 30
+            'lat'=> 56.12163457, 'lng' => 37.15833664
         ],
         'zoom' => 12
     ],

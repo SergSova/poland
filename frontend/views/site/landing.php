@@ -68,36 +68,36 @@ var slidersSettings = [
         id: '#house-price',
         type: 'double',
         postfix: ' руб',
-        min: {$housePriceInterval[0]},
-        max: {$housePriceInterval[1]}
+        min: '{$housePriceInterval[0]}',
+        max: '{$housePriceInterval[1]}'
     },
     {
         id: '#search-house_area',
         type: 'double',
         postfix: ' м2',
-        min: {$houseAreaInterval[0]},
-        max: {$houseAreaInterval[1]}
+        min: '{$houseAreaInterval[0]}',
+        max: '{$houseAreaInterval[1]}'
     },
     {
         id: '#search-house_distance',
         type: 'double',
         postfix: ' км',
-        min: {$houseDistanceInterval[0]},
-        max: {$houseDistanceInterval[1]}
+        min: '{$houseDistanceInterval[0]}',
+        max: '{$houseDistanceInterval[1]}'
     },
     {
         id: '#apartment-price',
         type: 'double',
         postfix: ' руб',
-        min: {$apartmentPriceInterval[0]},
-        max: {$apartmentPriceInterval[1]}
+        min: '{$apartmentPriceInterval[0]}',
+        max: '{$apartmentPriceInterval[1]}'
     },
     {
         id: '#search-apartment_area',
         type: 'double',
         postfix: ' м2',
-        min: {$apartmentAreaInterval[0]},
-        max: {$apartmentAreaInterval[1]}
+        min: '{$apartmentAreaInterval[0]}',
+        max: '{$apartmentAreaInterval[1]}'
     },
 ];
 function createSlider(obj){
