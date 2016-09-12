@@ -48,7 +48,8 @@
                     <p>Направление/район: <strong><?= $model->baseModel->district->name ?></strong></p>
                     <p>Адрес: <strong><?= $model->baseModel->address ?></strong></p>
                     <p>Цена: <strong><?= $model->baseModel->price ?></strong></p>
-                    <p>Описание: <strong><?= $model->baseModel->description ?></strong></p>
+                    <p>Краткое описание: <strong><?= $model->baseModel->short_description ?></strong></p>
+                    <p>Полное описание: <strong><?= $model->baseModel->full_description ?></strong></p>
                 </div>
             </div>
             <div class="panel panel-default">

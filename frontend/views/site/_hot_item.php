@@ -1,6 +1,10 @@
 <?php
     use yii\helpers\Url;
 
+    /**
+     * @var \common\models\Realty $model
+     */
+
     $realtyType = $model->realtyType->realty_table;
 ?>
 <div class="col s12 m6 l3">
@@ -18,7 +22,7 @@
                 <p class="subtitle"><?= $model->address?></p>
             </div>
             <div class="card-description">
-                <?= $model->description?>
+                <?= $model->short_description?>
             </div>
         </div>
         <!--        <div class="card-action">-->

@@ -15,7 +15,8 @@
      * @property integer     $price
      * @property string      $address
      * @property string      $map_coord
-     * @property string      $description
+     * @property string      $short_description
+     * @property string      $full_description
      * @property string      $status
      *
      * @property Apartment   $apartment
@@ -54,13 +55,15 @@
                         'price',
                         'address',
                         'map_coord',
-                        'description'
+                        'short_description',
+                        'full_description'
                     ],
                     'required'
                 ],
                 [
                     [
-                        'description',
+                        'short_description',
+                        'full_description',
                         'status'
                     ],
                     'string'
@@ -109,7 +112,8 @@
                 'price' => 'Цена',
                 'address' => 'Адрес',
                 'map_coord' => 'Map Coord',
-                'description' => 'Описание',
+                'short_description' => 'Краткое описание',
+                'full_description' => 'Полное описание',
                 'status' => 'Статус',
             ];
         }
@@ -150,6 +154,7 @@
         }
 
         public function afterFind(){
-            $this->description = nl2br($this->description);
+            $this->short_description = nl2br($this->short_description);
+            $this->full_description = nl2br($this->full_description);
         }
     }

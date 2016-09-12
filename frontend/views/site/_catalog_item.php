@@ -1,5 +1,6 @@
 <?php
     use yii\helpers\Url;
+    /** @var \common\models\Realty $model */
 
     $realtyType = $model->realtyType->realty_table;
 ?>
@@ -19,7 +20,7 @@
                 <p class="subtitle"><?= $model->address?></p>
             </div>
             <div class="card-description">
-                <?= $model->description?>
+                <?= $model->short_description?>
             </div>
         </div>
             <a href="<?= Url::to(['site/realty', 'id'=> $model->id])?>" class="btn mypallete fullWidth waves-effect waves-light" data-pjax="0">Подробнее</a>

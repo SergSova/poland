@@ -113,14 +113,15 @@ JS;
                     <p class="subtitle"><?= $realty->district->name ?></p>
                 </div>
                 <div class="divider"></div>
-                <p class="description flow-text"><?= $realty->description ?></p>
+                <p class="description flow-text"><?= $realty->short_description ?></p>
                 <div class="divider"></div>
                 <?= $this->render('_view'.ucfirst($realtyTypeName), ['model' => $realty->$realtyTypeName]) ?>
             </div>
         </div>
     </div>
 </div>
-
+<div class="fullWidth">                <p class="description flow-text"><?= $realty->full_description ?></p>
+</div>
 <div class="section map-wrapper fullHeight">
     <div class="map-container" id="map"></div>
     <?php

@@ -21,7 +21,9 @@
                                           ->notNull(),
                 'map_coord'       => $this->string(255)
                                           ->notNull(),
-                'description'     => $this->text()
+                'short_description'     => $this->text()
+                                          ->notNull(),
+                'full_description'     => $this->text()
                                           ->notNull(),
                 'status'          => "enum('active','inactive','sale','deposit') NOT NULL DEFAULT 'active'"
             ]);

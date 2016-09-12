@@ -87,10 +87,15 @@
                 </div>
                 <?= $form->field($model->baseModel, 'price')
                          ->input('number', ['placeholder' => 'руб']) ?>
-                <?= $form->field($model->baseModel, 'description')
+                <?= $form->field($model->baseModel, 'short_description')
                          ->textarea([
                                         'rows' => 7,
-                                        'placeholder' => 'Введите описание объекта'
+                                        'placeholder' => 'Введите краткое описание объекта'
+                                    ]) ?>
+                <?= $form->field($model->baseModel, 'full_description')
+                         ->textarea([
+                                        'rows' => 7,
+                                        'placeholder' => 'Введите полное описание объекта'
                                     ]) ?>
             </div>
         </div>

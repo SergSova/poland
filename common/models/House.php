@@ -138,8 +138,6 @@
                 if(!empty($photos)){
                     $this->cover = $photos[0];
                 }
-            }else{
-//                $this->cover = 'catalog/'.$this->realty_id.'/'.$this->cover;
             }
 
             return true;
