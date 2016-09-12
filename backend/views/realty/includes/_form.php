@@ -69,7 +69,7 @@
                                      ]) ?>
                 <?= $form->field($model->baseModel, 'map_coord')
                          ->input('text', [
-                             'disabled' => true,
+                             'readonly' => true,
                              'placeholder' => 'Выберите точку на карте'
                          ])
                          ->label('Координаты') ?>
@@ -96,7 +96,7 @@
         </div>
     </div>
 </div>
-<?= $this->render('_form'.$realtyType, [
+<?= $this->render('_form'.ucfirst($realtyType), [
     'form' => $form,
     'model' => $model
 ]); ?>

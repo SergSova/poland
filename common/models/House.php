@@ -71,11 +71,6 @@
                 ],
                 [
                     [
-                        'readiness_doc_electro',
-                        'readiness_doc_gas',
-                        'readiness_doc_house',
-                        'readiness_doc_land',
-                        'readiness_house',
                         'communication_water',
                         'communication_electro',
                         'communication_gas',
@@ -119,11 +114,6 @@
                 'land_area' => 'Площадь Участка',
                 'distance' => 'Расстояние от МКАД',
                 'house_type' => 'Размер дома',
-                'readiness_doc_electro' => 'Документы на электричество',
-                'readiness_doc_gas' => 'Документы на газ',
-                'readiness_doc_house' => 'Документы на дом',
-                'readiness_doc_land' => 'документы на землю',
-                'readiness_house' => 'Готовность дома',
                 'communication_water' => 'Вода',
                 'communication_electro' => 'Электричество',
                 'communication_gas' => 'Газ',
@@ -149,7 +139,7 @@
                     $this->cover = $photos[0];
                 }
             }else{
-                $this->cover = 'catalog/'.$this->realty_id.'/'.$this->cover;
+//                $this->cover = 'catalog/'.$this->realty_id.'/'.$this->cover;
             }
 
             return true;
