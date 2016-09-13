@@ -42,4 +42,16 @@ $('.slick-nav').slick({
     ]
 });
 
+$('.modal-trigger').leanModal();
+$('.close-modal-but').click(function () {
+    $($(this).data('target')).closeModal();
+});
+$('#callback-form-wrap').on("pjax:start", function(){
+    $(this).find('.preloader').show();
+});
+$('#feedback-form-wrap').on("pjax:start", function(){
+    $(this).find('.preloader').show();
+})
+
+
 

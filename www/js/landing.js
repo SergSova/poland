@@ -94,3 +94,4 @@ $('#sendMail-form').submit(function(event){
     }
 
 });
+

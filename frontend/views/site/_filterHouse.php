@@ -4,13 +4,17 @@
      * @var \frontend\models\Search $searchModel
      */
     use common\models\District;
+    use frontend\models\Search;
+    use frontend\widgets\SliderWidget\SliderWidget;
     use macgyer\yii2materializecss\lib\Html;
     use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use yii\helpers\ArrayHelper;
     use yii\widgets\Pjax;
 
+    $housePriceInterval = Search::getPriceInterval(1);
+    $houseAreaInterval = Search::getInterval('house_area', 'house');
+    $houseDistanceInterval = Search::getInterval('distance', 'house');
 ?>
-<div class="col s12" id="house">
     <br>
     <?php Pjax::begin(['id' => 'house-filter']) ?>
     <?php $houseForm = ActiveForm::begin([
@@ -28,16 +32,34 @@
         <?= Html::activeHiddenInput($searchModel, 'serviceTypeId', ['value' => 1]) ?>
 
         <div class="input-field no-marg-top col s10 offset-s1">
-            <p class="label no-marg-bot">Стоимость, руб</p>
-            <?= Html::activeInput('text', $searchModel, 'price', ['id' => 'house-price']) ?>
+            <?= SliderWidget::widget([
+                                         'label' => 'Стоимость, руб',
+                                         'model' => $searchModel,
+                                         'attribute' => 'price',
+                                         'postfix' => ' руб',
+                                         'min' => $housePriceInterval[0],
+                                         'max' => $housePriceInterval[1]
+                                     ]) ?>
         </div>
         <div class="input-field no-marg-top col s10 offset-s1">
-            <p class="label no-marg-bot">Площадь дома, м2</p>
-            <?= Html::activeInput('text', $searchModel, 'house_area') ?>
+            <?= SliderWidget::widget([
+                                         'label' => 'Площадь дома, м2',
+                                         'model' => $searchModel,
+                                         'attribute' => 'house_area',
+                                         'postfix' => ' м2',
+                                         'min' => $houseAreaInterval[0],
+                                         'max' => $houseAreaInterval[1]
+                                     ]) ?>
         </div>
         <div class="input-field no-marg-top col s10 offset-s1">
-            <p class="label no-marg-bot">Удаленность от МКАД, км</p>
-            <?= Html::activeInput('text', $searchModel, 'house_distance') ?>
+            <?= SliderWidget::widget([
+                                         'label' => 'Удаленность от МКАД, км',
+                                         'model' => $searchModel,
+                                         'attribute' => 'house_distance',
+                                         'postfix' => ' км',
+                                         'min' => $houseDistanceInterval[0],
+                                         'max' => $houseDistanceInterval[1]
+                                     ]) ?>
         </div>
     </div>
     <div class="row">
@@ -47,4 +69,3 @@
     </div>
     <?php ActiveForm::end() ?>
     <?php Pjax::end() ?>
-</div>

@@ -26,100 +26,6 @@
     $houseDistanceInterval = Search::getInterval('distance', 'house');
     $apartmentAreaInterval = Search::getInterval('area', 'apartment');
 
-    $script = <<<JS
-var slidersSettings = [
-    {
-        id: '#house-price',
-        type: 'double',
-        postfix: ' руб',
-        min: {$housePriceInterval[0]},
-        max: {$housePriceInterval[1]}
-    },
-    {
-        id: '#search-house_area',
-        type: 'double',
-        postfix: ' м2',
-        min: {$houseAreaInterval[0]},
-        max: {$houseAreaInterval[1]}
-    },
-    {
-        id: '#search-house_distance',
-        type: 'double',
-        postfix: ' км',
-        min: {$houseDistanceInterval[0]},
-        max: {$houseDistanceInterval[1]}
-    },
-    {
-        id: '#mobile-filter-house-price',
-        type: 'double',
-        postfix: ' руб',
-        min: {$housePriceInterval[0]},
-        max: {$housePriceInterval[1]}
-    },
-    {
-        id: '#mobile-filter-house-area',
-        type: 'double',
-        postfix: ' м2',
-        min: {$houseAreaInterval[0]},
-        max: {$houseAreaInterval[1]}
-    },
-    {
-        id: '#mobile-filter-house-distance',
-        type: 'double',
-        postfix: ' км',
-        min: {$houseDistanceInterval[0]},
-        max: {$houseDistanceInterval[1]}
-    },
-    {
-        id: '#apartment-price',
-        type: 'double',
-        postfix: ' руб',
-        min: {$apartmentPriceInterval[0]},
-        max: {$apartmentPriceInterval[1]}
-    },
-    {
-        id: '#search-apartment_area',
-        type: 'double',
-        postfix: ' м2',
-        min: {$apartmentAreaInterval[0]},
-        max: {$apartmentAreaInterval[1]}
-    },
-    {
-        id: '#mobile-filter-apartment-price',
-        type: 'double',
-        postfix: ' руб',
-        min: {$apartmentPriceInterval[0]},
-        max: {$apartmentPriceInterval[1]}
-    },
-    {
-        id: '#mobile-filter-apartment-area',
-        type: 'double',
-        postfix: ' м2',
-        min: {$apartmentAreaInterval[0]},
-        max: {$apartmentAreaInterval[1]}
-    },
-];
-function createSlider(obj){
-    var sliderInp = $(obj.id);
-    var delimPos = sliderInp.val().indexOf(';');
-    var min = sliderInp.val().substring(0, delimPos);
-    var max = sliderInp.val().substring(delimPos+1);
-    
-    return sliderInp.ionRangeSlider({
-        type: obj.type,
-        min: obj.min,
-        max: obj.max,
-
-        postfix: obj.postfix
-    });
-    
-}
-
-for(var i = 0; i < slidersSettings.length; i++){
-   createSlider(slidersSettings[i]);
-}
-JS;
-    $this->registerJs($script, View::POS_END);
     $pjaxScript = <<<JS
     function updateData(){
         $.pjax.reload({container:"#realty-list"});
@@ -153,8 +59,12 @@ JS;
                             <li class="tab col s6 waves-effect waves-light"><a href="#apartment">Квартиры</a></li>
                         </ul>
                     </div>
-                    <?= $this->render('_filterHouse', ['searchModel' => $searchModel]) ?>
-                    <?= $this->render('_filterApartment', ['searchModel' => $searchModel]) ?>
+                    <div class="col s12" id="house">
+                        <?= $this->render('_filterHouse', ['searchModel' => $searchModel]) ?>
+                    </div>
+                    <div class="col s12" id="apartment" style="display: none">
+                        <?= $this->render('_filterApartment', ['searchModel' => $searchModel]) ?>
+                    </div>
                 </div>
             </div>
         </div>

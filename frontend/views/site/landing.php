@@ -3,13 +3,14 @@
     /**
      * @var                                $this yii\web\View
      * @var \frontend\models\ContactForm   $feedback
-     * @var \frontend\models\Callback $callback
+     * @var \frontend\models\Callback      $callback
      */
 
     use common\models\District;
     use common\models\Realty;
     use frontend\assets\LandingAsset;
     use frontend\models\Search;
+    use frontend\widgets\SliderWidget\SliderWidget;
     use macgyer\yii2materializecss\lib\Html;
     use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use yii\helpers\ArrayHelper;
@@ -43,85 +44,15 @@
     }
     $markersData = json_encode($markersData);
 
-    $mapConfig = [
-        'center' => Yii::$app->params['mapCenter'],
-        'zoom' => Yii::$app->params['mapZoom'],
-    ];
-    $mapConfig = json_encode($mapConfig);
+    $mapConfig = json_encode(Yii::$app->params['mapConfig']);
 
-    $script = <<<JS
+    $searchModel = new Search();
+
+    $MapInit = <<<JS
 mapInit({$mapConfig});
 showMarkers({$markersData});
 JS;
-
-    $this->registerJs($script,3);
-
-    $housePriceInterval = Search::getPriceInterval(1);
-    $apartmentPriceInterval = Search::getPriceInterval(2);
-    $houseAreaInterval = Search::getInterval('house_area', 'house');
-    $houseDistanceInterval = Search::getInterval('distance', 'house');
-    $apartmentAreaInterval = Search::getInterval('area', 'apartment');
-    $searchModel = new Search();
-
-    $sliderScript = <<<JS
-var slidersSettings = [
-    {
-        id: '#house-price',
-        type: 'double',
-        postfix: ' руб',
-        min: '{$housePriceInterval[0]}',
-        max: '{$housePriceInterval[1]}'
-    },
-    {
-        id: '#search-house_area',
-        type: 'double',
-        postfix: ' м2',
-        min: '{$houseAreaInterval[0]}',
-        max: '{$houseAreaInterval[1]}'
-    },
-    {
-        id: '#search-house_distance',
-        type: 'double',
-        postfix: ' км',
-        min: '{$houseDistanceInterval[0]}',
-        max: '{$houseDistanceInterval[1]}'
-    },
-    {
-        id: '#apartment-price',
-        type: 'double',
-        postfix: ' руб',
-        min: '{$apartmentPriceInterval[0]}',
-        max: '{$apartmentPriceInterval[1]}'
-    },
-    {
-        id: '#search-apartment_area',
-        type: 'double',
-        postfix: ' м2',
-        min: '{$apartmentAreaInterval[0]}',
-        max: '{$apartmentAreaInterval[1]}'
-    },
-];
-function createSlider(obj){
-    var sliderInp = $(obj.id);
-    var delimPos = sliderInp.val().indexOf(';');
-    var min = sliderInp.val().substring(0, delimPos);
-    var max = sliderInp.val().substring(delimPos+1);
-    
-    return sliderInp.ionRangeSlider({
-        type: obj.type,
-        min: obj.min,
-        max: obj.max,
-
-        postfix: obj.postfix
-    });
-    
-}
-
-for(var i = 0; i < slidersSettings.length; i++){
-   createSlider(slidersSettings[i]);
-}    
-JS;
-    $this->registerJs($sliderScript, View::POS_END);
+    $this->registerJs($MapInit, View::POS_END);
 
 ?>
 <!-- hero box -->
@@ -132,7 +63,7 @@ JS;
                 <div class="col s12 m4 l3 center-on-small-only">
                     <br>
                     <br>
-                    <img class="responsive-img" src="<?= Url::to('@web/img/big-logo.png')?>">
+                    <img class="responsive-img" src="<?= Url::to('@web/img/big-logo.png') ?>">
                 </div>
                 <div class="col s12 m8 l9 mypallete-text center-on-small-only">
                     <h1 class="hide-on-med-and-down">Новый Адрес</h1>
@@ -167,97 +98,15 @@ JS;
                         </ul>
                     </div>
                     <div class="col s12" id="house">
-                        <br>
-                        <?php $houseForm = ActiveForm::begin([
-                                                                 'method' => 'GET',
-                                                                 'action' => ['catalog'],
-                                                                 'options' => ['data-pjax' => true]
-                                                             ]); ?>
-                        <div class="row">
-
-                            <?= $houseForm->field($searchModel, 'districtId', ['options' => ['class' => 'input-field marg-top col s10 offset-s1']])
-                                          ->dropDownList(ArrayHelper::map(District::find()
-                                                                                  ->all(), 'id', 'name'), ['prompt' => 'Все направления'])
-                                          ->label('Направление') ?>
-                            <?= Html::activeHiddenInput($searchModel, 'realtyTypeId', ['value' => 1]) ?>
-                            <?= Html::activeHiddenInput($searchModel, 'serviceTypeId', ['value' => 1]) ?>
-
-                            <div class="input-field no-marg-top col s10 offset-s1">
-                                <p class="label no-marg-bot">Стоимость, руб</p>
-                                <?= Html::activeInput('text', $searchModel, 'price', ['id' => 'house-price']) ?>
-                            </div>
-                            <div class="input-field no-marg-top col s10 offset-s1">
-                                <p class="label no-marg-bot">Площадь дома, м2</p>
-                                <?= Html::activeInput('text', $searchModel, 'house_area') ?>
-                            </div>
-                            <div class="input-field no-marg-top col s10 offset-s1">
-                                <p class="label no-marg-bot">Удаленность от МКАД, км</p>
-                                <?= Html::activeInput('text', $searchModel, 'house_distance') ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s10 offset-s1">
-                                <?= Html::submitButton('Подобрать', ['class' => 'btn red fullWidth waves-effect waves-light']) ?>
-                            </div>
-                        </div>
-                        <?php ActiveForm::end() ?>
+                        <?= $this->render('_filterHouse', ['searchModel' => $searchModel]) ?>
                     </div>
                     <div class="col s12" id="apartment" style="display: none">
-                        <br>
-                        <?php $apartmentForm = ActiveForm::begin([
-                                                                     'method' => 'GET',
-                                                                     'action' => ['catalog'],
-                                                                     'options' => ['data-pjax' => true]
-                                                                 ]); ?>
-                        <div class="row">
-
-                            <?= $apartmentForm->field($searchModel, 'districtId',
-                                                      ['options' => ['class' => 'input-field marg-top col s10 offset-s1']])
-                                              ->dropDownList(ArrayHelper::map(District::find()
-                                                                                      ->all(), 'id', 'name'), ['prompt' => 'Все направления'])
-                                              ->label('Направление') ?>
-                            <?= Html::activeHiddenInput($searchModel, 'realtyTypeId', ['value' => 2]) ?>
-                            <?= Html::activeHiddenInput($searchModel, 'serviceTypeId', ['value' => 1]) ?>
-
-                            <div class="input-field no-marg-top col s10 offset-s1">
-                                <p class="label no-marg-bot">Стоимость, руб</p>
-                                <?= Html::activeInput('text', $searchModel, 'price', ['id' => 'apartment-price']) ?>
-                            </div>
-                            <div class="input-field no-marg-top col s10 offset-s1">
-                                <p class="label no-marg-bot">Площадь квартиры, м2</p>
-                                <?= Html::activeInput('text', $searchModel, 'apartment_area') ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s12 mypallete lighten">
-                                <br>
-                                <?= $apartmentForm->field($searchModel, 'apartment_rooms',
-                                                          ['options' => ['class' => 'input-field marg-top col s10 offset-s1']])
-                                                  ->dropDownList([
-                                                                     0 => 'Любое',
-                                                                     1 => 1,
-                                                                     2 => 2,
-                                                                     3 => 3,
-                                                                     4 => 4
-                                                                 ], [
-                                                                     'multiple' => true,
-                                                                     'options' => [0 => ['disabled' => true]]
-                                                                 ])
-                                                  ->label('Количество комнат') ?>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col s10 offset-s1">
-                                <?= Html::submitButton('Подобрать', ['class' => 'btn red fullWidth waves-effect waves-light']) ?>
-                            </div>
-                        </div>
-                        <?php ActiveForm::end() ?>
+                        <?= $this->render('_filterApartment', ['searchModel' => $searchModel]) ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 <!-- hot box -->
 <div class="section scrollspy" id="hot-box">
@@ -286,29 +135,29 @@ JS;
         <div class="row no-marg-bot">
             <br>
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv1.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv1.png') ?>">
                 <p class="flow-text">Юридическое сопровождение сделки купли/продажи</p>
             </div>
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv2.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv2.png') ?>">
                 <p class="flow-text">Помощь в получении ипотеки с/без первоначального взноса</p>
             </div>
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv3.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv3.png') ?>">
                 <p class="flow-text">Возможность использовать материснкий капитал</p>
             </div>
         </div>
         <div class="row no-marg-bot">
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
                 <p class="flow-text">Гарантированное прохождение опеки</p>
             </div>
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
                 <p class="flow-text">Помощь в продаже недвижимости</p>
             </div>
             <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png')?>">
+                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
                 <p class="flow-text">Рассмотрение вариантов взаиморасчета</p>
             </div>
         </div>
@@ -336,43 +185,47 @@ JS;
     </div>
 </div>
 <!-- videoreview box -->
-<?php if($videoReview):?>
-<div class="sectionWithBg fullHeight scrollspy" id="videoreview-box">
-    <div class="sectionWithBg-wrap valign-wrapper">
-        <div class="container valign" id="videobox">
-            <div id="videobox-title">
-                <div class="row">
-                    <div class="col s12 m10 offset-m1">
-                        <div class="card">
-                            <div class="card-content center">
-                                <p class="card-title mypallete-text"><?= $videoReview->title?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <iframe id="videobox-container" width="1280" height="720" src="https://www.youtube.com/embed/<?= $videoReview->video?>?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
-
-            <div id="videobox-description">
-                <div class="row">
-                    <div class="col s12 m10 offset-m1">
-                        <div class="card">
-                            <div class="card-content center">
-                                <p class="flow-text mypallete-text"><?= $videoReview->description?></p>
-                                <div class="row">
-                                    <div class="col s12 m6 marg-bot"><a href="<?= Url::to(['site/catalog'])?>" class="btn mypallete fullWidth waves-effect waves-light">Открыть в каталоге</a></div>
-                                    <div class="col s12 m6"><a href="<?= Url::to(['site/video-review'])?>" class="btn red fullWidth waves-effect waves-light">Все Обзоры</a></div>
+<?php if($videoReview): ?>
+    <div class="sectionWithBg fullHeight scrollspy" id="videoreview-box">
+        <div class="sectionWithBg-wrap valign-wrapper">
+            <div class="container valign" id="videobox">
+                <div id="videobox-title">
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card">
+                                <div class="card-content center">
+                                    <p class="card-title mypallete-text"><?= $videoReview->title ?></p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <iframe id="videobox-container" width="1280" height="720" src="https://www.youtube.com/embed/<?= $videoReview->video ?>?enablejsapi=1"
+                        frameborder="0" allowfullscreen></iframe>
+
+                <div id="videobox-description">
+                    <div class="row">
+                        <div class="col s12 m10 offset-m1">
+                            <div class="card">
+                                <div class="card-content center">
+                                    <p class="flow-text mypallete-text"><?= $videoReview->description ?></p>
+                                    <div class="row">
+                                        <div class="col s12 m6 marg-bot"><a href="<?= Url::to(['site/catalog']) ?>"
+                                                                            class="btn mypallete fullWidth waves-effect waves-light">Открыть в
+                                                каталоге</a></div>
+                                        <div class="col s12 m6"><a href="<?= Url::to(['site/video-review']) ?>"
+                                                                   class="btn red fullWidth waves-effect waves-light">Все Обзоры</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 <?php endif; ?>
 <!-- techology -->
 <div class="section mypallete white-text">
