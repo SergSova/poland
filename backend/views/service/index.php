@@ -1,0 +1,23 @@
+<?php
+    /**
+     * @var                              $this \yii\web\View
+     * @var \yii\data\ActiveDataProvider $dataProvider
+     */
+    use yii\bootstrap\Html;
+    use yii\grid\GridView;
+
+?>
+<div class="service-index">
+    <?= Html::a('Создать Услугу', ['service/create'], ['class' => 'btn btn-primary']) ?>
+    <?= GridView::widget([
+                             'dataProvider' => $dataProvider,
+                             'columns' => [
+                                 ['class' => 'yii\grid\SerialColumn'],
+                                 'title',
+//                                 'short_description',
+//                                 'full_description',
+                                 'icon',
+                                 ['class' => 'yii\grid\ActionColumn'],
+                             ]
+                         ]) ?>
+</div>

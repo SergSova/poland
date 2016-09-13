@@ -75,8 +75,8 @@ JS;
                 <div class="col s12 m6 l4 offset-l2 marg-bot">
                     <a href="<?= Url::to(['site/catalog']) ?>" class="btn fullWidth mypallete waves-effect waves-light">Перейти к каталогу</a>
                 </div>
-                <div class="col s12 m6 l4 scrollTo">
-                    <a href="#services" class="btn fullWidth mypallete waves-effect waves-light">Наши услуги</a>
+                <div class="col s12 m6 l4">
+                    <a href="<?= Url::to(['site/service']) ?>" class="btn fullWidth mypallete waves-effect waves-light">Наши услуги</a>
                 </div>
             </div>
         </div>
@@ -124,62 +124,6 @@ JS;
         <div class="row">
             <div class="col s12 m4 offset-m4">
                 <a href="<?= Url::to(['site/catalog']) ?>" class="btn fullWidth red waves-effect waves-light">Все горячие предложения</a>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- services -->
-<div class="section mypallete white-text scrollspy" id="services">
-    <div class="container">
-        <h2 class="white-text center">Наши услуги</h2>
-        <div class="row no-marg-bot">
-            <br>
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv1.png') ?>">
-                <p class="flow-text">Юридическое сопровождение сделки купли/продажи</p>
-            </div>
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv2.png') ?>">
-                <p class="flow-text">Помощь в получении ипотеки с/без первоначального взноса</p>
-            </div>
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv3.png') ?>">
-                <p class="flow-text">Возможность использовать материснкий капитал</p>
-            </div>
-        </div>
-        <div class="row no-marg-bot">
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
-                <p class="flow-text">Гарантированное прохождение опеки</p>
-            </div>
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
-                <p class="flow-text">Помощь в продаже недвижимости</p>
-            </div>
-            <div class="col s12 m4 l4 center">
-                <img class="responsive-img" src="<?= Url::to('@web/img/icon-serv4.png') ?>">
-                <p class="flow-text">Рассмотрение вариантов взаиморасчета</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="section">
-    <div class="row no-marg-bot">
-        <p class="flow-text mypallete-text center">Консультацию по услугам Вы можете получить по телефону +7 000 000 00 00 или закажите обратный
-            звонок!</p>
-        <div class="col s12 m8 offset-m2 l6 offset-l3 waves-effect waves-light">
-            <div class="row no-marg-bot mypallete feedback-call">
-                <div class="col s12 m6 push-m6">
-                    <?= Html::input('tel', 'ServiceCallModel[phone]', null, [
-                        'class' => 'center',
-                        'id' => 'service-call-inp',
-                        'placeholder' => '8 000 000 00 00'
-                    ]) ?>
-                </div>
-                <div class="col s12 m6 pull-m6">
-                    <button class="btn fullWidth mypallete" id="service-call-button"><i class="material-icons left">phone_in_talk</i>Заказать звонок
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -333,7 +277,6 @@ JS;
     <li><a href="#hero-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="О нас"></a></li>
     <li><a href="#map-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Карта"></a></li>
     <li><a href="#hot-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Горячие предложения"></a></li>
-    <li><a href="#services" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Услуги"></a></li>
     <li><a href="#videoreview-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Видео обзор"></a></li>
     <li><a href="#technology" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Технология"></a></li>
     <li><a href="#contacts" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Контакты"></a></li>

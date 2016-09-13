@@ -4,6 +4,7 @@
     use common\models\Callback;
     use common\models\Feedback;
     use common\models\Realty;
+    use common\models\Service;
     use common\models\VideoReview;
     use frontend\models\Search;
     use frontend\models\ServiceCallModel;
@@ -19,9 +20,9 @@
         public function behaviors(){
             return [
                 'verbs' => [
-                    'class'   => VerbFilter::className(),
+                    'class' => VerbFilter::className(),
                     'actions' => [
-                        'feedback'     => ['post'],
+                        'feedback' => ['post'],
                         'service-call' => ['post'],
                     ],
                 ],
@@ -39,7 +40,7 @@
         public function actionIndex(){
 
             return $this->render('landing', [
-                'feedback'    => new Feedback(),
+                'feedback' => new Feedback(),
                 'videoReview' => VideoReview::find()
                                             ->limit(1)
                                             ->one()
@@ -51,7 +52,7 @@
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('catalog', [
-                'searchModel'  => $searchModel,
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
         }
@@ -63,9 +64,9 @@
             }
 
             return $this->render('realty', [
-                'realty'       => $realty,
+                'realty' => $realty,
                 'requestEmail' => new Feedback(['subject' => $realty->id]),
-                'requestCall'  => new Callback(['subject' => $realty->id])
+                'requestCall' => new Callback(['subject' => $realty->id])
             ]);
         }
 
@@ -117,5 +118,16 @@
             return json_encode([
                                    'message' => $model->errors
                                ]);
+        }
+
+        public function actionService(){
+            return $this->render('service', [
+                'model' => Service::find()
+                                  ->all()
+            ]);
+        }
+
+        public function actionServiceItem($id){
+            //return $this->render('service_item', ['model' => Service::findOne($id)]);
         }
     }

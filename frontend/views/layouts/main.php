@@ -7,12 +7,10 @@
     use \common\models\Callback;
     use \common\models\Feedback;
     use macgyer\yii2materializecss\lib\Html;
-    use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use macgyer\yii2materializecss\widgets\Nav;
     use macgyer\yii2materializecss\widgets\NavBar;
     use macgyer\yii2materializecss\widgets\Alert;
-use yii\helpers\Url;
-use yii\web\View;
+    use yii\helpers\Url;
 
     AppAsset::register($this);
 
@@ -54,10 +52,9 @@ use yii\web\View;
             [
                 'label' => 'Услуги',
                 'url' => [
-                    'site/index',
-                    '#' => 'services'
+                    'site/service'
                 ],
-                'options' => ['class' => 'scrollTo']
+                'options' => ['class' => '']
             ],
             [
                 'label' => 'Видео Обзоры',
@@ -112,31 +109,17 @@ use yii\web\View;
     <div class="modal-content">
         <i class="material-icons right close-modal-but" data-target="#modalCall">close</i>
         <h4>Заказать обратный звонок</h4>
-        <?= $this->render('../site/_formCallback',['model'=>$callbackModel])?>
+        <?= $this->render('../site/_formCallback', ['model' => $callbackModel]) ?>
     </div>
 </div>
 <div class="modal" id="modalEmail">
     <div class="modal-content">
         <i class="material-icons right close-modal-but" data-target="#modalEmail">close</i>
         <h4>Напишите нам</h4>
-        <?= $this->render('../site/_formFeedback',['model'=>$feedbackModel])?>
+        <?= $this->render('../site/_formFeedback', ['model' => $feedbackModel]) ?>
     </div>
 </div>
-<?php
-    $string = <<<JS
-$('.modal-trigger').leanModal();
-$('.close-modal-but').click(function () {
-    $($(this).data('target')).closeModal();
-});
-$('#callback-form-wrap').on("pjax:start", function(){
-    $(this).find('.preloader').show();
-});
-$('#feedback-form-wrap').on("pjax:start", function(){
-    $(this).find('.preloader').show();
-})
-JS;
-    $this->registerJs($string);
-?>
+
 <?php $this->endBody() ?>
 </body>
 </html>
