@@ -33,7 +33,7 @@ class Callback extends \yii\db\ActiveRecord
             [['name', 'subject', 'phone'], 'required'],
             [['name', 'subject'], 'string', 'max' => 50],
             [['phone'], 'string', 'max' => 25],
-            ['phone', 'match', 'pattern' => '/^8{1}\d{10}$/i'],
+            ['phone', 'match', 'pattern' => '/^\+?[78]{1}\d{10}$/i','message' => 'Не правильный формат телефона +7(8) 000 000 00 00'],
 
         ];
     }

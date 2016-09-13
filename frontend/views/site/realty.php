@@ -2,6 +2,8 @@
     /**
      * @var \yii\web\View $this
      * @var \common\models\Realty $realty
+     * @var \common\models\Callback $requestCall
+     * @var \common\models\Feedback $requestEmail
      */
 
     use frontend\assets\RealtyAsset;
@@ -9,9 +11,6 @@
     use yii\helpers\Url;
     use yii\web\View;
     use yii\widgets\Pjax;
-
-    /** @var \common\models\Callback $requestCall */
-    /** @var \common\models\Feedback $requestEmail */
 
     $this->title = 'Realty '.$realty->id;
     RealtyAsset::register($this);
@@ -146,7 +145,7 @@ JS;
                                            ]
                                        ])?>
         <div class="row">
-            <?= $rcf->field($requestCall, 'phone')->input('tel')?>
+            <?= $rcf->field($requestCall, 'phone')->widget(\yii\widgets\MaskedInput::className(),['mask'=>'+7 (999) 999 99 99'])?>
             <?= $rcf->field($requestCall, 'name')?>
             <?= $rcf->field($requestCall, 'subject')->hiddenInput()->label(false)?>
         </div>
@@ -189,19 +188,3 @@ JS;
         <?php Pjax::end()?>
     </div>
 </div>
-
-<?php
-    $string = <<<JS
-$('.modal-trigger').leanModal();
-$('.close-modal-but').click(function () {
-    $($(this).data('target')).closeModal();
-});
-$('#callback-form-wrap').on("pjax:start", function(){
-    $(this).find('.preloader').show();
-});
-$('#feedback-form-wrap').on("pjax:start", function(){
-    $(this).find('.preloader').show();
-})
-JS;
-    $this->registerJs($string);
-?>

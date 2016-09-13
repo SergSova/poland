@@ -22,7 +22,7 @@
     <?= $form->field($model, 'subject', ['options' => ['class' => 'input-field s12']]) ?>
     <?= $form->field($model, 'name', ['options' => ['class' => 'input-field s12']]) ?>
     <?= $form->field($model, 'phone', ['options' => ['class' => 'input-field s12']])
-                     ->input('tel') ?>
+        ->widget(\yii\widgets\MaskedInput::className(),['mask'=>'+7 (999) 999 99 99']) ?>
 </div>
 <div class="row no-marg-bot">
     <div class="col s12 m6 offset-m3">
