@@ -54,8 +54,7 @@ showMarkers({$markersData});
 JS;
     $this->registerJs($MapInit, View::POS_END);
 
-
-    $this->title='Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
+    $this->title = 'Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
     $this->registerMetaTag([
                                'name' => 'description',
                                'content' => 'Агентство недвижимости в Москве - Новый адрес, широкий выбор домов для покупки или аренды, мы являемся компанией застройщиком'
@@ -97,23 +96,26 @@ JS;
     </div>
 </div>
 <!-- map box -->
-<div class="map-wrapper fullHeight scrollspy" id="map-box">
-    <div class="map-container hide-on-small-only" id="map"></div>
-    <div class="map-filter">
-        <div class="filter-box">
-            <div class="card mypallete white-text">
-                <div class="row no-marg-bot">
-                    <div class="col s12">
-                        <ul class="tabs">
-                            <li class="tab col s6 waves-effect waves-light"><a href="#house">Дома</a></li>
-                            <li class="tab col s6 waves-effect waves-light"><a href="#apartment">Квартиры</a></li>
-                        </ul>
-                    </div>
-                    <div class="col s12" id="house">
-                        <?= $this->render('_filterHouse', ['searchModel' => $searchModel]) ?>
-                    </div>
-                    <div class="col s12" id="apartment" style="display: none">
-                        <?= $this->render('_filterApartment', ['searchModel' => $searchModel]) ?>
+<div class="section scrollspy fullHeight no-padding" id="map-box">
+    <h1 class="mypallete-text center map-header">Дома от застройщика - “Новый Адрес“</h1>
+    <div class="map-wrapper">
+        <div class="map-container hide-on-small-only" id="map"></div>
+        <div class="map-filter">
+            <div class="filter-box">
+                <div class="card mypallete white-text">
+                    <div class="row no-marg-bot">
+                        <div class="col s12">
+                            <ul class="tabs">
+                                <li class="tab col s6 waves-effect waves-light"><a href="#house">Дома</a></li>
+                                <li class="tab col s6 waves-effect waves-light"><a href="#apartment">Квартиры</a></li>
+                            </ul>
+                        </div>
+                        <div class="col s12" id="house">
+                            <?= $this->render('_filterHouse', ['searchModel' => $searchModel]) ?>
+                        </div>
+                        <div class="col s12" id="apartment" style="display: none">
+                            <?= $this->render('_filterApartment', ['searchModel' => $searchModel]) ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +125,7 @@ JS;
 <!-- hot box -->
 <div class="section scrollspy" id="hot-box">
     <div class="container">
-        <h2 class="mypallete-text center">Горячие предложения</h2>
+        <h2 class="mypallete-text center">Горячие предложения недвижимости - Дома</h2>
         <div class="row">
             <?php
                 foreach($hot as $realty):
@@ -142,42 +144,46 @@ JS;
 </div>
 <!-- videoreview box -->
 <?php if($videoReview): ?>
-    <div class="sectionWithBg fullHeight scrollspy" id="videoreview-box">
-        <div class="sectionWithBg-wrap valign-wrapper">
-            <div class="container valign" id="videobox">
-                <div id="videobox-title">
-                    <div class="row">
-                        <div class="col s12 m10 offset-m1">
-                            <div class="card">
-                                <div class="card-content center">
-                                    <p class="card-title mypallete-text"><?= $videoReview->title ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <iframe id="videobox-container" width="1280" height="720" src="https://www.youtube.com/embed/<?= $videoReview->video ?>?enablejsapi=1"
-                        frameborder="0" allowfullscreen></iframe>
-
-                <div id="videobox-description">
-                    <div class="row">
-                        <div class="col s12 m10 offset-m1">
-                            <div class="card">
-                                <div class="card-content center">
-                                    <p class="flow-text mypallete-text"><?= $videoReview->description ?></p>
-                                    <div class="row">
-                                        <div class="col s12 m6 marg-bot"><a href="<?= Url::to(['site/catalog']) ?>"
-                                                                            class="btn mypallete fullWidth waves-effect waves-light">Открыть в
-                                                каталоге</a></div>
-                                        <div class="col s12 m6"><a href="<?= Url::to(['site/video-review']) ?>"
-                                                                   class="btn red fullWidth waves-effect waves-light">Все Обзоры</a></div>
+    <div class="sectionWithBg scrollspy" id="videoreview-box">
+        <div class="sectionWithBg-wrap">
+            <h2 class="mypallete-text center videoreview-header">Видео Обзоры</h2>
+            <div class="valign-wrapper">
+                <div class="valign" id="videobox">
+                    <div id="videobox-title">
+                        <div class="row">
+                            <div class="col s12 m10 offset-m1">
+                                <div class="card">
+                                    <div class="card-content center">
+                                        <p class="card-title mypallete-text"><?= $videoReview->title ?></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <iframe id="videobox-container" width="1280" height="720"
+                            src="https://www.youtube.com/embed/<?= $videoReview->video ?>?enablejsapi=1"
+                            frameborder="0" allowfullscreen></iframe>
+
+                    <div id="videobox-description">
+                        <div class="row">
+                            <div class="col s12 m10 offset-m1">
+                                <div class="card">
+                                    <div class="card-content center">
+                                        <p class="flow-text mypallete-text"><?= $videoReview->description ?></p>
+                                        <div class="row">
+                                            <div class="col s12 m6 marg-bot"><a href="<?= Url::to(['site/catalog']) ?>"
+                                                                                class="btn mypallete fullWidth waves-effect waves-light">Открыть в
+                                                    каталоге</a></div>
+                                            <div class="col s12 m6"><a href="<?= Url::to(['site/video-review']) ?>"
+                                                                       class="btn red fullWidth waves-effect waves-light">Все Обзоры</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -186,7 +192,7 @@ JS;
 <!-- techology -->
 <div class="section mypallete white-text">
     <div class="container">
-        <h2 class="center">Почему выбирать дом лучше у нас</h2>
+        <h2 class="center">Информация о нашем Агентстве недвижимости</h2>
     </div>
 </div>
 <div class="section scrollspy" id="technology">
