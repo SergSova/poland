@@ -10,8 +10,7 @@
      *
      * @property integer $id
      * @property string  $title
-     * @property string  $short_description
-     * @property string  $full_description
+     * @property string  $description
      * @property string  $icon
      */
     class Service extends \yii\db\ActiveRecord{
@@ -30,16 +29,12 @@
                 [
                     [
                         'title',
-                        'short_description',
-                        'full_description'
+                        'description'
                     ],
                     'required'
                 ],
                 [
-                    [
-                        'short_description',
-                        'full_description'
-                    ],
+                    ['description'],
                     'string'
                 ],
                 [
@@ -60,8 +55,7 @@
             return [
                 'id' => 'ID',
                 'title' => 'Название',
-                'short_description' => 'Краткое описание',
-                'full_description' => 'Полное описание',
+                'description' => 'Описание',
                 'icon' => 'Icon',
             ];
         }
@@ -79,6 +73,4 @@
 
             return parent::beforeSave($insert);
         }
-
-
     }

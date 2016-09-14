@@ -54,6 +54,18 @@ showMarkers({$markersData});
 JS;
     $this->registerJs($MapInit, View::POS_END);
 
+
+    $this->title='Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
+    $this->registerMetaTag([
+                               'name' => 'description',
+                               'content' => 'Агентство недвижимости в Москве - Новый адрес, широкий выбор домов для покупки или аренды, мы являемся компанией застройщиком'
+                           ]);
+
+    $this->registerMetaTag([
+                               'name' => 'keywords',
+                               'content' => 'Агентство недвижимости, Москва недвижимость, Новый адрес'
+                           ]);
+
 ?>
 <!-- hero box -->
 <div class="sectionWithBg fullHeight scrollspy" id="hero-box">
@@ -174,7 +186,7 @@ JS;
 <!-- techology -->
 <div class="section mypallete white-text">
     <div class="container">
-        <h2 class="center">Технология строительства</h2>
+        <h2 class="center">Почему выбирать дом лучше у нас</h2>
     </div>
 </div>
 <div class="section scrollspy" id="technology">

@@ -120,14 +120,14 @@
                                ]);
         }
 
-        public function actionService(){
-            return $this->render('service', [
-                'model' => Service::find()
-                                  ->all()
-            ]);
-        }
+        public function actionService($id = null){
+            if(is_null($id)){
+                return $this->render('service', [
+                    'model' => Service::find()
+                                      ->all()
+                ]);
+            }
 
-        public function actionServiceItem($id){
-            //return $this->render('service_item', ['model' => Service::findOne($id)]);
+            return $this->render('service_item', ['model' => Service::findOne($id)]);
         }
     }

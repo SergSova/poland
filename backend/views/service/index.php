@@ -14,8 +14,6 @@
                              'columns' => [
                                  ['class' => 'yii\grid\SerialColumn'],
                                  'title',
-//                                 'short_description',
-//                                 'full_description',
                                  'icon',
                                  ['class' => 'yii\grid\ActionColumn'],
                              ]
