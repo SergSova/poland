@@ -14,6 +14,10 @@
                     'httpOnly' => true
                 ],
             ],
+            'assetManager' => [
+                'bundles' => require(__DIR__.'/'.(YII_ENV_PROD ? 'assets-prod.php' : 'assets-dev.php')),
+            ],
+
             'session'    => [
                 // this is the name of the session cookie used for login on the frontend
                 'name' => 'advanced-frontend',

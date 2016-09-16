@@ -13,6 +13,7 @@
 
         public $depends = [
             'frontend\assets\AppAsset',
+            'frontend\assets\GoogleMapAsset',
             'frontend\assets\MapAsset',
             'frontend\assets\SlickAsset'
         ];

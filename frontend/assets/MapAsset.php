@@ -8,7 +8,12 @@
         public $baseUrl = '@web';
 
         public $js = [
-            'https://maps.googleapis.com/maps/api/js?key=AIzaSyAUYPzaG4lQCw-v_7JUodo1mgWDlztuD0s', 'js/markerclusterer.js', 'js/map.js'
+            'js/markerclusterer.js', 'js/map.js'
+        ];
+
+        public $depends = [
+            'yii\web\JqueryAsset',
+            'frontend\assets\GoogleMapAsset',
         ];
 
     }

@@ -6,20 +6,16 @@
      * @var \frontend\models\Callback      $callback
      */
 
-    use common\models\District;
     use common\models\Realty;
     use frontend\assets\LandingAsset;
     use frontend\models\Search;
-    use frontend\widgets\SliderWidget\SliderWidget;
-    use macgyer\yii2materializecss\lib\Html;
     use macgyer\yii2materializecss\widgets\form\ActiveForm;
-    use yii\helpers\ArrayHelper;
     use yii\helpers\Url;
     use yii\web\View;
-    use yii\widgets\Pjax;
 
     $this->title = 'Landing';
     LandingAsset::register($this);
+
     $models = Realty::find()
                     ->where([
                                 'status' => [

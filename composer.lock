@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "301a087725d8410a338addf870fddf70",
+    "hash": "b8b82b3c73bf42e412354a9fe371e6a5",
     "content-hash": "08cf48b2ad3d8e81650c740eef19e044",
     "packages": [
         {
@@ -271,16 +271,16 @@
         },
         {
             "name": "cebe/markdown",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cebe/markdown.git",
-                "reference": "54a2c49de31cc44e864ebf0500a35ef21d0010b2"
+                "reference": "c30eb5e01fe021cc5bba2f9ee0eeef96d4931166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cebe/markdown/zipball/54a2c49de31cc44e864ebf0500a35ef21d0010b2",
-                "reference": "54a2c49de31cc44e864ebf0500a35ef21d0010b2",
+                "url": "https://api.github.com/repos/cebe/markdown/zipball/c30eb5e01fe021cc5bba2f9ee0eeef96d4931166",
+                "reference": "c30eb5e01fe021cc5bba2f9ee0eeef96d4931166",
                 "shasum": ""
             },
             "require": {
@@ -327,7 +327,7 @@
                 "markdown",
                 "markdown-extra"
             ],
-            "time": "2015-03-06 05:28:07"
+            "time": "2016-09-14 20:40:20"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -427,16 +427,16 @@
         },
         {
             "name": "macgyer/yii2-materializecss",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MacGyer/yii2-materializecss.git",
-                "reference": "101a54afe32ee96186acf2617ad83dcc1d84e438"
+                "reference": "dfeb2d522cf1d2e17be74d4ae04cb2a73ca9fdf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MacGyer/yii2-materializecss/zipball/101a54afe32ee96186acf2617ad83dcc1d84e438",
-                "reference": "101a54afe32ee96186acf2617ad83dcc1d84e438",
+                "url": "https://api.github.com/repos/MacGyer/yii2-materializecss/zipball/dfeb2d522cf1d2e17be74d4ae04cb2a73ca9fdf3",
+                "reference": "dfeb2d522cf1d2e17be74d4ae04cb2a73ca9fdf3",
                 "shasum": ""
             },
             "require": {
@@ -469,7 +469,7 @@
                 "widgets",
                 "yii2"
             ],
-            "time": "2016-08-08 19:39:42"
+            "time": "2016-09-01 21:01:08"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -717,16 +717,16 @@
         },
         {
             "name": "yiisoft/yii2-imagine",
-            "version": "2.0.3",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-imagine.git",
-                "reference": "0961343138b65bba447de84b2b300899617e6acc"
+                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/0961343138b65bba447de84b2b300899617e6acc",
-                "reference": "0961343138b65bba447de84b2b300899617e6acc",
+                "url": "https://api.github.com/repos/yiisoft/yii2-imagine/zipball/68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c",
+                "reference": "68ed3d96cd1895035cef3c0e9ce9cf6c2c0c7f1c",
                 "shasum": ""
             },
             "require": {
@@ -761,25 +761,25 @@
                 "imagine",
                 "yii2"
             ],
-            "time": "2015-03-01 06:22:44"
+            "time": "2016-09-04 15:14:08"
         },
         {
             "name": "yiisoft/yii2-swiftmailer",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-swiftmailer.git",
-                "reference": "e2c6315caff30a9271a7afad4d684627721dc69a"
+                "reference": "26b900767f1031ff3a4668dfa36c10595875f0a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/e2c6315caff30a9271a7afad4d684627721dc69a",
-                "reference": "e2c6315caff30a9271a7afad4d684627721dc69a",
+                "url": "https://api.github.com/repos/yiisoft/yii2-swiftmailer/zipball/26b900767f1031ff3a4668dfa36c10595875f0a5",
+                "reference": "26b900767f1031ff3a4668dfa36c10595875f0a5",
                 "shasum": ""
             },
             "require": {
                 "swiftmailer/swiftmailer": "~5.0",
-                "yiisoft/yii2": ">=2.0.4"
+                "yiisoft/yii2": "~2.0.4"
             },
             "type": "yii2-extension",
             "extra": {
@@ -811,7 +811,7 @@
                 "swiftmailer",
                 "yii2"
             ],
-            "time": "2016-03-17 03:58:49"
+            "time": "2016-09-09 11:48:11"
         }
     ],
     "packages-dev": [
