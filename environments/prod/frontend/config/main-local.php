@@ -25,10 +25,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName'  => false,
             'rules'           => [
-                '/'               => 'site/index',
-                'catalog'         => 'site/catalog',
+                '/' => 'site/index',
+                'service/<id:\d+>' => 'site/service',
+                'catalog' => 'site/catalog',
+                'technology' => 'site/technology',
                 'realty/<id:\d+>' => 'site/realty',
-                'video-review'    => 'site/video-review'
+                'video-review' => 'site/video-review'
             ],
         ]
 

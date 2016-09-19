@@ -54,7 +54,6 @@
                 'url' => [
                     'site/service'
                 ],
-                'options' => ['class' => '']
             ],
             [
                 'label' => 'Видео Обзоры',
@@ -63,10 +62,17 @@
             [
                 'label' => 'Технология',
                 'url' => [
+                    'site/technology',
+                ],
+            ],
+            [
+                'label' => 'О нас',
+                'url' => [
                     'site/index',
-                    '#' => 'technology'
+                    '#'=>'about',
                 ],
                 'options' => ['class' => 'scrollTo']
+
             ],
             [
                 'label' => 'Kонтакты',

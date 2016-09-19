@@ -25,6 +25,7 @@
                             ])
                     ->all();
     $hot = array_slice($models, -4);
+
     $markersData = [];
     foreach($models as $realty){
         $coord = explode(';', $realty->map_coord);
@@ -191,58 +192,53 @@ JS;
         <h2 class="center">Информация о нашем Агентстве недвижимости</h2>
     </div>
 </div>
-<div class="section scrollspy" id="technology">
+<div class="section scrollspy" id="about">
     <div class="container">
-        <div class="tech-item">
-            <p class="flow-text center"><strong>Фундамент</strong></p>
-            <div class="cover">
-                <img class="responsive-img" src="img/fundament.jpg">
-            </div>
-            <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum debitis maxime ipsum, optio quam magnam omnis iste vel
-                hic cumque blanditiis expedita aliquam odio vitae id, rem obcaecati ipsa velit. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Cum voluptas tenetur, voluptatibus mollitia odio sint, alias debitis quasi ut. Ut amet qui id magni consectetur recusandae
-                sequi, aperiam, voluptatem repellendus!</p>
-        </div>
-        <div class="tech-item">
-            <p class="flow-text center"><strong>Фундамент</strong></p>
-            <div class="cover">
-                <img class="responsive-img" src="img/fundament.jpg">
-            </div>
-            <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum debitis maxime ipsum, optio quam magnam omnis iste vel
-                hic cumque blanditiis expedita aliquam odio vitae id, rem obcaecati ipsa velit. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Cum voluptas tenetur, voluptatibus mollitia odio sint, alias debitis quasi ut. Ut amet qui id magni consectetur recusandae
-                sequi, aperiam, voluptatem repellendus!</p>
-        </div>
-        <div class="tech-item">
-            <p class="flow-text center"><strong>Фундамент</strong></p>
-            <div class="cover">
-                <img class="responsive-img" src="img/fundament.jpg">
-            </div>
-            <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum debitis maxime ipsum, optio quam magnam omnis iste vel
-                hic cumque blanditiis expedita aliquam odio vitae id, rem obcaecati ipsa velit. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Cum voluptas tenetur, voluptatibus mollitia odio sint, alias debitis quasi ut. Ut amet qui id magni consectetur recusandae
-                sequi, aperiam, voluptatem repellendus!</p>
-        </div>
-        <div class="tech-item">
-            <p class="flow-text center"><strong>Фундамент</strong></p>
-            <div class="cover">
-                <img class="responsive-img" src="img/fundament.jpg">
-            </div>
-            <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum debitis maxime ipsum, optio quam magnam omnis iste vel
-                hic cumque blanditiis expedita aliquam odio vitae id, rem obcaecati ipsa velit. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Cum voluptas tenetur, voluptatibus mollitia odio sint, alias debitis quasi ut. Ut amet qui id magni consectetur recusandae
-                sequi, aperiam, voluptatem repellendus!</p>
-        </div>
-        <div class="tech-item">
-            <p class="flow-text center"><strong>Фундамент</strong></p>
-            <div class="cover">
-                <img class="responsive-img" src="img/fundament.jpg">
-            </div>
-            <p class="flow-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum debitis maxime ipsum, optio quam magnam omnis iste vel
-                hic cumque blanditiis expedita aliquam odio vitae id, rem obcaecati ipsa velit. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Cum voluptas tenetur, voluptatibus mollitia odio sint, alias debitis quasi ut. Ut amet qui id magni consectetur recusandae
-                sequi, aperiam, voluptatem repellendus!</p>
-        </div>
+        <p class="flow-text center">
+            10 причин, почему вам стоит покупать дома у нас
+            За много лет работы на рынке <strong>застройщик</strong> “Новый адрес” изучил потребности клиентов и точно знает, что предложить каждому
+            из вас. Мы перепробовали много технологий, материалов, способов строительства и выбрали самые лучшие, чтобы дарить вам комфорт и тепло.
+            Ищете новое жилье, в котором можно было бы находиться круглый год? Нет проблем! Обращайтесь к <strong>застройщику</strong> и <strong>агентству
+                недвижимости в Москве “Новый адрес”</strong>.
+        </p>
+        <ol>
+            <li>
+                Вы сможете выбрать для себя оптимальное соотношение “цена - качество”. Мы предлагаем множество объектов по доступной цене.
+            </li>
+            <li>
+                Вы будете жить в том районе, в котором сами захотите: у нас огромный выбор <strong>домов в Подмосковье</strong> - от Ленинградского до
+                Носовихинского
+                шоссе.
+            </li>
+            <li>
+                У вас будет определенное место жительства - на каждый участок есть право собственности, поэтому вы сможете прописаться в доме.
+            </li>
+            <li>
+                Вам не надо переживать за обустройство жилья, мы строим <strong>дома в Подмосковье</strong> “под ключ” - выполняем всю внутреннюю
+                отделку, заводим
+                коммуникации. Вам остается только завезти мебель и заселяться!
+            </li>
+            <li>После покупки, вы сможете жить в новом доме круглый год. Мы заботимся о том, чтобы у наших клиентов была возможность подъехать на
+                машине
+                ко всем объектам в любую погоду.
+            </li>
+            <li>С нашим <strong>агентством недвижимости в Москве</strong> вы подберете дом с той инфраструктурой, которая нужна именно вам. Хотите
+                жить рядом со
+                школой,
+                детским садом или рядом с вокзалом? Не проблема, найдем для вас подходящий объект!
+            </li>
+            <li>Вы можете быть уверены в качестве работы <strong>застройщика</strong>. Все <strong>дома в Подмосковье</strong> строятся по современным
+                европейским технологиям.
+            </li>
+            <li>Наше <strong>агентство недвижимости</strong> работает уже 10 лет на <strong>Московском</strong> рынке, и за это время зарекомендовало
+                себя как надежный партнер.
+            </li>
+            <li>С вами работают опытные специалисты: у нас вы можете получить юридическое сопровождение сделок, помощь в оформлении ипотеки и другие
+                услуги.
+            </li>
+            <li>За время нашей работы уже более ___ человек стали счастливыми обладателями комфортных <strong>домов в Подмосковье</strong>.</li>
+        </ol>
+
     </div>
 </div>
 <!-- contacts box -->

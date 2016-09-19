@@ -130,4 +130,8 @@
 
             return $this->render('service_item', ['model' => Service::findOne($id)]);
         }
+
+        public function actionTechnology(){
+            return $this->render('technology');
+        }
     }
