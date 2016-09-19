@@ -1,7 +1,7 @@
 <?php
     /**
-     * @var \yii\web\View $this
-     * @var \common\models\Realty $realty
+     * @var \yii\web\View           $this
+     * @var \common\models\Realty   $realty
      * @var \common\models\Callback $requestCall
      * @var \common\models\Feedback $requestEmail
      */
@@ -18,16 +18,16 @@
     $coord = explode(';', $realty->map_coord);
     $marker = [
         'position' => [
-            'lat' => $coord[0]*1,
-            'lng' => $coord[1]*1
+            'lat' => $coord[0] * 1,
+            'lng' => $coord[1] * 1
         ]
     ];
     $marker = json_encode($marker);
 
     $mapConfig = [
         'center' => [
-            'lat' => $coord[0]*1,
-            'lng' => $coord[1]*1
+            'lat' => $coord[0] * 1,
+            'lng' => $coord[1] * 1
         ],
         'zoom' => 14,
         'draggable' => false
@@ -56,13 +56,14 @@ JS;
     <div class="container">
         <div class="row no-marg-bot">
             <div class="col s12 m6 l3 center-on-small-only">
-                <a href="<?= Url::to(['site/catalog']) ?>" class="btn mypallete fullWidth waves-effect waves-light"><i class="material-icons left">arrow_back</i>К каталогу</a>
+                <a href="<?= Url::to(['site/catalog']) ?>" class="btn mypallete fullWidth waves-effect waves-light"><i class="material-icons left">arrow_back</i>К
+                    каталогу</a>
             </div>
             <div class="col s12 m6 l3 push-l6 realty-code">
                 <span class="chip">Код недвижимости: <?= $realty->id ?></span>
             </div>
             <div class="col s12 m12 l3 center">
-                <h2 class="realty-title"><?= Yii::$app->params['realties']['realtyType'][$realtyTypeName]?></h2>
+                <h2 class="realty-title"><?= Yii::$app->params['realties']['realtyType'][$realtyTypeName] ?></h2>
             </div>
         </div>
         <div class="row">
@@ -94,12 +95,14 @@ JS;
                 </div>
                 <div class="row">
                     <div class="col s12 m6 marg-bot">
-                        <button class="btn btn-large mypallete fullWidth waves-effect waves-light modal-trigger" data-target="requestCall"><i class="material-icons left">phone_in_talk</i>Заказать
+                        <button class="btn btn-large mypallete fullWidth waves-effect waves-light modal-trigger" data-target="requestCall"><i
+                                class="material-icons left">phone_in_talk</i>Заказать
                             звонок
                         </button>
                     </div>
                     <div class="col s12 m6">
-                        <button class="btn btn-large mypallete fullWidth waves-effect waves-light modal-trigger" data-target="requestEmail"><i class="material-icons left">mail</i>Отправить
+                        <button class="btn btn-large mypallete fullWidth waves-effect waves-light modal-trigger" data-target="requestEmail"><i
+                                class="material-icons left">mail</i>Отправить
                             заявку
                         </button>
                     </div>
@@ -119,7 +122,10 @@ JS;
         </div>
     </div>
 </div>
-<div class="fullWidth">                <p class="description flow-text"><?= $realty->full_description ?></p>
+<div class="section">
+    <div class="container">
+        <p class="description-r flow-text"><?= $realty->full_description ?></p>
+    </div>
 </div>
 <div class="section map-wrapper fullHeight">
     <div class="map-container" id="map"></div>
@@ -127,13 +133,17 @@ JS;
         $tmp = explode(';', $realty->map_coord);
         $realtyCoordinates = $tmp[0].','.$tmp[1];
     ?>
-    <a href="https://www.google.com.ua/maps/dir//<?= $realtyCoordinates?>" class="btn mypallete" target="_blank" id="directionBut">Проложить маршрут</a>
+    <a href="https://www.google.com.ua/maps/dir//<?= $realtyCoordinates ?>" class="btn mypallete" target="_blank" id="directionBut">Проложить
+        маршрут</a>
 </div>
 <div class="modal" id="requestCall">
     <div class="modal-content">
         <i class="material-icons right close-modal-but" data-target="#requestCall">close</i>
         <h4>Заказать звонок</h4>
-        <?php Pjax::begin(['enablePushState' => false, 'id'=>'callback-form-wrap'])?>
+        <?php Pjax::begin([
+                              'enablePushState' => false,
+                              'id' => 'callback-form-wrap'
+                          ]) ?>
         <?php $rcf = ActiveForm::begin([
                                            'action' => [
                                                'site/feedback',
@@ -143,26 +153,32 @@ JS;
                                            'options' => [
                                                'data-pjax' => true
                                            ]
-                                       ])?>
+                                       ]) ?>
         <div class="row">
-            <?= $rcf->field($requestCall, 'phone')->widget(\yii\widgets\MaskedInput::className(),['mask'=>'+7 (999) 999 99 99'])?>
-            <?= $rcf->field($requestCall, 'name')?>
-            <?= $rcf->field($requestCall, 'subject')->hiddenInput()->label(false)?>
+            <?= $rcf->field($requestCall, 'phone')
+                    ->widget(\yii\widgets\MaskedInput::className(), ['mask' => '+7 (999) 999 99 99']) ?>
+            <?= $rcf->field($requestCall, 'name') ?>
+            <?= $rcf->field($requestCall, 'subject')
+                    ->hiddenInput()
+                    ->label(false) ?>
         </div>
         <div class="row no-marg-bot">
             <div class="col s12 m6 offset-m3">
                 <button class="btn red fullWidth waves-effect waves-light">Отправить заявку</button>
             </div>
         </div>
-        <?php ActiveForm::end()?>
-        <?php Pjax::end()?>
+        <?php ActiveForm::end() ?>
+        <?php Pjax::end() ?>
     </div>
 </div>
 <div class="modal" id="requestEmail">
     <div class="modal-content">
         <i class="material-icons right close-modal-but" data-target="#requestEmail">close</i>
         <h4>Оставить заявку</h4>
-        <?php Pjax::begin(['enablePushState' => false, 'id'=>'feedback-form-wrap']) ?>
+        <?php Pjax::begin([
+                              'enablePushState' => false,
+                              'id' => 'feedback-form-wrap'
+                          ]) ?>
         <?php $requestEmailForm = ActiveForm::begin([
                                                         'action' => [
                                                             'site/feedback',
@@ -172,19 +188,22 @@ JS;
                                                         'options' => [
                                                             'data-pjax' => true
                                                         ]
-                                                    ])?>
+                                                    ]) ?>
         <div class="row">
-            <?= $requestEmailForm->field($requestEmail, 'subject')->hiddenInput()->label(false)?>
-            <?= $requestEmailForm->field($requestEmail, 'email')?>
-            <?= $requestEmailForm->field($requestEmail, 'name')?>
-            <?= $requestEmailForm->field($requestEmail, 'body')->textarea(['class' => 'materialize-textarea'])?>
+            <?= $requestEmailForm->field($requestEmail, 'subject')
+                                 ->hiddenInput()
+                                 ->label(false) ?>
+            <?= $requestEmailForm->field($requestEmail, 'email') ?>
+            <?= $requestEmailForm->field($requestEmail, 'name') ?>
+            <?= $requestEmailForm->field($requestEmail, 'body')
+                                 ->textarea(['class' => 'materialize-textarea']) ?>
         </div>
         <div class="row no-marg-bot">
             <div class="col s12 m6 offset-m3">
                 <button class="btn red fullWidth waves-effect waves-light">Отправить заявку</button>
             </div>
         </div>
-        <?php ActiveForm::end()?>
-        <?php Pjax::end()?>
+        <?php ActiveForm::end() ?>
+        <?php Pjax::end() ?>
     </div>
 </div>
