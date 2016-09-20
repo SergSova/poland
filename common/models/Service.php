@@ -73,4 +73,8 @@
 
             return parent::beforeSave($insert);
         }
+
+        public function getImgPath(){
+            return Yii::getAlias('@storageUrl').DIRECTORY_SEPARATOR.$this->icon;
+        }
     }

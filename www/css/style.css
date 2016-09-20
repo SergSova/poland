@@ -790,3 +790,11 @@ margin: 0;
 .description-r{
     text-align: justify;
 }
+
+.action-ico{
+    position: absolute;
+    top: 50px;
+    width: 40px;
+    height: 40px;
+    z-index: 400;
+}

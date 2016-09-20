@@ -76,6 +76,15 @@ a.desc:after {
     white-space: nowrap;
 }
 
+.grid-view img {
+    height: 40px;
+    width: 40px;
+}
+
+.service-index .grid-view img {
+    background-color: #666666;
+}
+
 .grid-view .filters input,
 .grid-view .filters select {
     min-width: 50px;
@@ -100,16 +109,16 @@ a.desc:after {
     padding: 8px;
 }
 
-@media(max-width:768px) {
-	.nav li > form {
-	    padding: 3px;
-	}
+@media (max-width: 768px) {
+    .nav li > form {
+        padding: 3px;
+    }
 }
 
 .nav > li > form > button:hover {
     text-decoration: none;
 }
 
-.service-form .thumbnail{
+.service-form .thumbnail {
     background-color: grey;
 }

@@ -14,7 +14,7 @@
                              'columns' => [
                                  ['class' => 'yii\grid\SerialColumn'],
                                  'title',
-                                 'icon',
+                                 'imgPath:image',
                                  ['class' => 'yii\grid\ActionColumn'],
                              ]
                          ]) ?>
