@@ -39,6 +39,7 @@ AppAsset::register($this);
         ['label' => 'Каталог', 'url' => ['/realty/index']],
         ['label' => 'Районы', 'url' => ['/district/index']],
         ['label' => 'Услуги', 'url' => ['/service/index']],
+        ['label' => 'Акции', 'url' => ['/action/index']],
         ['label' => 'Видео Обзоры', 'url' => ['/video-review/index']],
     ];
     if (Yii::$app->user->isGuest) {

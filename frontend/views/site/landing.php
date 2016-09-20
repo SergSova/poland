@@ -13,33 +13,21 @@
     use yii\helpers\Url;
     use yii\web\View;
 
-    $this->title = 'Landing';
+    $this->title = 'Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
+    $this->registerMetaTag([
+                               'name' => 'description',
+                               'content' => 'Агентство недвижимости в Москве - Новый адрес, широкий выбор домов для покупки или аренды, мы являемся компанией застройщиком'
+                           ]);
+    $this->registerMetaTag([
+                               'name' => 'keywords',
+                               'content' => 'Агентство недвижимости, Москва недвижимость, Новый адрес'
+                           ]);
+
     LandingAsset::register($this);
 
-    $models = Realty::find()
-                    ->where([
-                                'status' => [
-                                    'active',
-                                    'deposit'
-                                ]
-                            ])
-                    ->all();
-    $hot = array_slice($models, -4);
+    $hot = Realty::getModelWithActionName('hot', 4);
 
-    $markersData = [];
-    foreach($models as $realty){
-        $coord = explode(';', $realty->map_coord);
-        $content = $this->render('_map_prev', ['model' => $realty]);
-
-        $markersData[] = [
-            'position' => [
-                'lat' => $coord[0] * 1,
-                'lng' => $coord[1] * 1
-            ],
-            'content' => $content
-        ];
-    }
-    $markersData = json_encode($markersData);
+    $markersData = json_encode(Realty::getMarkerData());
 
     $mapConfig = json_encode(Yii::$app->params['mapConfig']);
 
@@ -50,18 +38,6 @@ mapInit({$mapConfig});
 showMarkers({$markersData});
 JS;
     $this->registerJs($MapInit, View::POS_END);
-
-    $this->title = 'Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
-    $this->registerMetaTag([
-                               'name' => 'description',
-                               'content' => 'Агентство недвижимости в Москве - Новый адрес, широкий выбор домов для покупки или аренды, мы являемся компанией застройщиком'
-                           ]);
-
-    $this->registerMetaTag([
-                               'name' => 'keywords',
-                               'content' => 'Агентство недвижимости, Москва недвижимость, Новый адрес'
-                           ]);
-
 ?>
 <!-- hero box -->
 <div class="sectionWithBg fullHeight scrollspy" id="hero-box">
@@ -127,7 +103,7 @@ JS;
             <?php
                 foreach($hot as $realty):
                     ?>
-                    <?= $this->render('_hot_item', ['model' => $realty]) ?>
+                    <?= $this->render('_hot_item', ['model' => $realty->model]) ?>
                     <?php
                 endforeach;
             ?>

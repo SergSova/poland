@@ -1,6 +1,7 @@
 <?php
     namespace backend\components;
 
+    use common\models\ActionModel;
     use common\models\Apartment;
     use common\models\House;
     use common\models\Realty;
@@ -17,7 +18,7 @@
         /**
          * RealtyModel constructor.
          *
-         * @param Realty          $realty
+         * @param Realty $realty
          * @param House|Apartment $entity
          */
         public function __construct($realty, $entity){
@@ -39,12 +40,14 @@
             if(!$this->validate()){
                 return false;
             }
-            $dir ='';
+            $dir = '';
             $transaction = Yii::$app->db->beginTransaction();
             try{
                 if(!$this->baseModel->save()){
                     throw new \Exception($this->baseModel->getErrors());
                 }
+                $this->addModelToAction();
+
                 $dir = $this->baseModel->id;
                 $uploadedPhoto = Yii::$app->session->get('uploadedPhoto');
                 $photos = [];
@@ -63,7 +66,6 @@
                     throw new \Exception($this->entityModel->getErrors());
                 }
                 $transaction->commit();
-
             }catch(Exception $e){
                 if(is_dir(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR.$dir)){
                     FileHelper::removeDirectory(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR.$dir);
@@ -71,6 +73,7 @@
                 $transaction->rollBack();
                 throw $e;
             }
+
             return true;
         }
 
@@ -83,6 +86,9 @@
                 if(!$this->baseModel->save()){
                     throw new \Exception($this->baseModel->getErrors());
                 }
+
+                $this->addModelToAction();
+
                 $uploadedPhoto = Yii::$app->session->get('uploadedPhoto');
                 if(!empty($this->entityModel->photos)){
                     $photos = json_decode($this->entityModel->photos);
@@ -107,6 +113,7 @@
                 $transaction->rollBack();
                 throw $e;
             }
+
             return true;
         }
 
@@ -122,13 +129,35 @@
             }
 
             if(!$this->entityModel->validate()){
-               $this->errors['entityModel'] = $this->entityModel->getErrors();
+                $this->errors['entityModel'] = $this->entityModel->getErrors();
             }
 
             if(empty($this->errors)){
                 return true;
             }else{
                 return false;
+            }
+        }
+
+        private function addModelToAction(){
+            $actions = array_keys(Yii::$app->request->post('actions'));
+            foreach($actions as $action){
+                if(!$this->baseModel->getActionModels()
+                                    ->where(['action_id' => $action])
+                                    ->exists()
+                ){
+                    $actionModel = new ActionModel([
+                                                       'model_id' => $this->baseModel->id,
+                                                       'action_id' => $action
+                                                   ]);
+                    if(!$actionModel->save()){
+                        throw new \Exception($actionModel->getErrors());
+                    }
+                }
+            }
+            $removedAction = $this->baseModel->getActionModels()->where(['not in','action_id',$actions])->all();
+            foreach($removedAction as $item){
+                $item->delete();
             }
         }
 

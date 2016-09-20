@@ -8,29 +8,41 @@
     /**
      * This is the model class for table "{{%realty}}".
      *
-     * @property integer     $id
-     * @property integer     $realty_type_id
-     * @property integer     $service_type_id
-     * @property integer     $district_id
-     * @property integer     $price
-     * @property string      $address
-     * @property string      $map_coord
-     * @property string      $short_description
-     * @property string      $full_description
-     * @property string      $status
+     * @property integer $id
+     * @property integer $realty_type_id
+     * @property integer $service_type_id
+     * @property integer $district_id
+     * @property integer $price
+     * @property string $address
+     * @property string $map_coord
+     * @property string $short_description
+     * @property string $full_description
+     * @property string $status
      *
-     * @property Apartment   $apartment
-     * @property House       $house
-     * @property RealtyType  $realtyType
+     * @property ActionModel[] $actionModels
+     * @property Action[] $actions
+     * @property Apartment $apartment
+     * @property House $house
+     * @property RealtyType $realtyType
      * @property ServiceType $serviceType
-     * @property District    $district
+     * @property District $district
      */
     class Realty extends ActiveRecord{
+
         /**
          * @inheritdoc
          */
         public static function tableName(){
             return '{{%realty}}';
+        }
+
+        public function behaviors(){
+            return [
+                'discount' => [
+                    'class' => ActionForModelBehavior::className(),
+                    'price' => 'price',
+                ],
+            ];
         }
 
         /**
@@ -118,6 +130,22 @@
             ];
         }
 
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getActionModels(){
+            return $this->hasMany(ActionModel::className(), ['model_id' => 'id']);
+        }
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getActions(){
+            return $this->hasMany(Action::className(), ['id' => 'action_id'])
+                        ->viaTable('nad_action_model', ['model_id' => 'id']);
+        }
+
         /**
          * @return \yii\db\ActiveQuery
          */
@@ -156,5 +184,38 @@
         public function afterFind(){
             $this->short_description = nl2br($this->short_description);
             $this->full_description = nl2br($this->full_description);
+            $this->getActionForModel($this);
+        }
+
+        public static function getModelWithActionName($name, $limit){
+            return Action::findOne(['name' => $name])
+                         ->getActionModels()
+                         ->joinWith('model')
+                         ->where([
+                                     'status' => [
+                                         'active',
+                                         'deposit'
+                                     ]
+                                 ])
+                         ->orderBy(['id' => SORT_DESC])
+                         ->limit($limit)
+                         ->all();
+        }
+
+        public static function getMarkerData(){
+            $models = self::find()->where(['status' => ['active','deposit']])->all();
+            $markersData = [];
+            foreach($models as $realty){
+                $coord = explode(';', $realty->map_coord);
+                $content = Yii::$app->getView()->render('_map_prev', ['model' => $realty]);
+                $markersData[] = [
+                    'position' => [
+                        'lat' => $coord[0] * 1,
+                        'lng' => $coord[1] * 1
+                    ],
+                    'content' => $content
+                ];
+            }
+            return $markersData;
         }
     }

@@ -24,6 +24,9 @@
         ];
         $zoom = 18;
     }
+
+    $actions = \common\models\Action::find()
+                                    ->all();
 ?>
 <?php $form = ActiveForm::begin([
                                     'options' => [
@@ -99,6 +102,16 @@
                                     ]) ?>
             </div>
         </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Акции</div>
+            <div class="panel-body">
+                <?php foreach($actions as $action): ?>
+                    <?= Html::checkbox('actions['.$action->id.']', $model->baseModel->getActionModels()
+                                                                     ->where(['action_id' => $action->id])
+                                                                     ->exists(), ['label' => $action->title]) ?>
+                <?php endforeach; ?>
+            </div>
+        </div>
     </div>
 </div>
 <?= $this->render('_form'.ucfirst($realtyType), [
@@ -108,9 +121,9 @@
 <?= $this->render('_uploadFile', ['model' => $model]) ?>
 <div class="form-group">
     <?= Html::submitButton($model->baseModel->isNewRecord ? 'Создать объект' : 'Обновить данные', [
-                                                                                                    'class' => $model->baseModel->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
-                                                                                                    'style' => 'width: 100%;'
-                                                                                                ]) ?>
+        'class' => $model->baseModel->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
+        'style' => 'width: 100%;'
+    ]) ?>
 </div>
 <?php ActiveForm::end(); ?>
 
