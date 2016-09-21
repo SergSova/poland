@@ -2,6 +2,7 @@
 
     namespace common\models;
 
+    use cebe\markdown\Markdown;
     use Yii;
     use yii\db\ActiveRecord;
 
@@ -182,8 +183,9 @@
         }
 
         public function afterFind(){
-            $this->short_description = nl2br($this->short_description);
-            $this->full_description = nl2br($this->full_description);
+            $mark = new Markdown();
+            $this->short_description = $mark->parse($this->short_description);
+            $this->full_description =  $mark->parse($this->full_description);
             $this->getActionForModel($this);
         }
 
@@ -203,11 +205,19 @@
         }
 
         public static function getMarkerData(){
-            $models = self::find()->where(['status' => ['active','deposit']])->all();
+            $models = self::find()
+                          ->where([
+                                      'status' => [
+                                          'active',
+                                          'deposit'
+                                      ]
+                                  ])
+                          ->all();
             $markersData = [];
             foreach($models as $realty){
                 $coord = explode(';', $realty->map_coord);
-                $content = Yii::$app->getView()->render('_map_prev', ['model' => $realty]);
+                $content = Yii::$app->getView()
+                                    ->render('_map_prev', ['model' => $realty]);
                 $markersData[] = [
                     'position' => [
                         'lat' => $coord[0] * 1,
@@ -216,6 +226,7 @@
                     'content' => $content
                 ];
             }
+
             return $markersData;
         }
     }

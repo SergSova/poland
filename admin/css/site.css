@@ -122,3 +122,12 @@ a.desc:after {
 .service-form .thumbnail {
     background-color: grey;
 }
+
+.realty-view .img-thumbnail {
+    height: 50px;
+    width: 50px;
+}
+
+.realty-view .text-warning {
+    margin-top: 12px
+}

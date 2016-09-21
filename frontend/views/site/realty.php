@@ -111,9 +111,37 @@ JS;
             <div class="col s12 m12 l6 pull-l6 realty">
                 <div class="center-on-small-only">
                     <p class="title"><?= $realty->address ?></p>
-                    <p class="price"><?= $realty->price ?> руб</p>
+
+                    <?php if($realty->newPrice): ?>
+                        <div class="row">
+                            <div class="col s6 m6 l5">
+                                <p class="newPrice"><?= $realty->newPrice ?> руб</p>
+                            </div>
+                            <div class="col s6 m6 l5">
+                                <p class="oldPrice"><?= $realty->price ?> руб</p>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <p class="price"><?= $realty->price ?> руб</p>
+                    <?php endif ?>
                     <p class="subtitle"><?= $realty->district->name ?></p>
                 </div>
+
+                <?php if(count($realty->actions) > 0): ?>
+                    <div class="divider"></div>
+                    <h2 class="red-text">Акции</h2>
+                    <?php foreach($realty->actions as $action): ?>
+                        <div class="row">
+                            <div class="col s3 col m2 col l2">
+                                <img src="<?= $action->imgPath ?>" class="img-thumbnail">
+                            </div>
+                            <div class="col s9 col m10 col l10 red-text">
+                                <p><strong><?= $action->title ?></strong></p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif ?>
+
                 <div class="divider"></div>
                 <p class="description flow-text"><?= $realty->short_description ?></p>
                 <div class="divider"></div>

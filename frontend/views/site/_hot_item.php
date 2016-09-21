@@ -23,7 +23,7 @@ JS;
             <div class="card-image">
                 <div class="action-ico">
                     <?php foreach($model->actions as $action): ?>
-                        <img src="<?= Url::to($action->icon, true) ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
+                        <img src="<?=$action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
                     <?php endforeach; ?>
                 </div>
                 <img class="responsive-img"

@@ -15,7 +15,10 @@
     $this->params['breadcrumbs'][] = $this->title;
 
     $coord = explode(';', $model->baseModel->map_coord);
-    $centerMap = ['lat'=>$coord[0]*1, 'lng'=> $coord[1]*1];
+    $centerMap = [
+        'lat' => $coord[0] * 1,
+        'lng' => $coord[1] * 1
+    ];
     $zoom = 16;
 ?>
 <div class="realty-view">
@@ -56,18 +59,37 @@
                 <div class="panel-heading">Местоположение</div>
                 <div class="panel-body" style="height: 300px;">
                     <?= SimpleMapWidget::widget([
-                                                                               'mapSetting' => [
-                                                                                   'center' => $centerMap,
-                                                                                   'zoom' => $zoom,
-                                                                                   'draggable' => false
-                                                                               ]
+                                                    'mapSetting' => [
+                                                        'center' => $centerMap,
+                                                        'zoom' => $zoom,
+                                                        'draggable' => false
+                                                    ]
 
-                                                                           ]) ?>
+                                                ]) ?>
                 </div>
             </div>
         </div>
         <div class="col-lg-6">
-            <?= $this->render('includes/_view'.ucfirst($model->baseModel->realtyType->realty_table), ['model'=>$model->entityModel])?>
+            <?php if(count($model->baseModel->actions) > 0): ?>
+                <div class="panel panel-danger">
+                    <div class="panel-heading">Акции</div>
+                    <div class="panel-body"><?php foreach($model->baseModel->actions as $action): ?>
+
+                            <div class="row">
+                                <div class="col-xs-3 col-sm-2 col-lg-2">
+                                    <img src="<?= $action->imgPath ?>" class="img-thumbnail">
+                                </div>
+                                <div class="col-xs-9 col-sm-10 col-lg-10 text-warning">
+                                    <p><?= $action->title ?></p>
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif ?>
+
+            <?= $this->render('includes/_view'.ucfirst($model->baseModel->realtyType->realty_table), ['model' => $model->entityModel]) ?>
         </div>
         <div class="col-lg-12">
             <div class="panel panel-default">

@@ -106,9 +106,15 @@
             <div class="panel-heading">Акции</div>
             <div class="panel-body">
                 <?php foreach($actions as $action): ?>
-                    <?= Html::checkbox('actions['.$action->id.']', $model->baseModel->getActionModels()
-                                                                     ->where(['action_id' => $action->id])
-                                                                     ->exists(), ['label' => $action->title]) ?>
+                    <?php if($action->name == 'discount'): ?>
+                        <?= Html::radio('actions['.$action->name.']', $model->baseModel->getActionModels()
+                                                                                     ->where(['action_id' => $action->id])
+                                                                                     ->exists(), ['label' => $action->title,'value'=>$action->id]) ?>
+                        <?php else: ?>
+                        <?= Html::checkbox('actions['.$action->name.']', $model->baseModel->getActionModels()
+                                                                                        ->where(['action_id' => $action->id])
+                                                                                        ->exists(), ['label' => $action->title,'value'=>$action->id]) ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             </div>
         </div>

@@ -140,7 +140,7 @@
         }
 
         private function addModelToAction(){
-            $actions = array_keys(Yii::$app->request->post('actions'));
+            $actions = Yii::$app->request->post('actions');
             foreach($actions as $action){
                 if(!$this->baseModel->getActionModels()
                                     ->where(['action_id' => $action])

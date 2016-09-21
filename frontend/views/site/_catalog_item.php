@@ -7,7 +7,11 @@
 <div class="col s12 m6 l4">
     <div class="card catalog-item hoverable">
         <div class="card-image">
-
+            <div class="action-ico">
+                <?php foreach($model->actions as $action): ?>
+                    <img src="<?=$action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
+                <?php endforeach; ?>
+            </div>
             <img class="responsive-img" src="<?= ($model->$realtyType->cover) ? Yii::getAlias('@storageUrl').'/'.$model->$realtyType->cover : Url::to('@web/img/nophoto.jpg')?>">
             <div class="card-title">
                 <p class="title"><?= $model->district->name?></p>
