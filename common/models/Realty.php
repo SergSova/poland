@@ -9,24 +9,27 @@
     /**
      * This is the model class for table "{{%realty}}".
      *
-     * @property integer $id
-     * @property integer $realty_type_id
-     * @property integer $service_type_id
-     * @property integer $district_id
-     * @property integer $price
-     * @property string $address
-     * @property string $map_coord
-     * @property string $short_description
-     * @property string $full_description
-     * @property string $status
+     * @property integer       $id
+     * @property integer       $realty_type_id
+     * @property integer       $service_type_id
+     * @property integer       $district_id
+     * @property integer       $price
+     * @property string        $address
+     * @property string        $map_coord
+     * @property string        $short_description
+     * @property string        $full_description
+     * @property string        $status
      *
      * @property ActionModel[] $actionModels
-     * @property Action[] $actions
-     * @property Apartment $apartment
-     * @property House $house
-     * @property RealtyType $realtyType
-     * @property ServiceType $serviceType
-     * @property District $district
+     * @property Action[]      $actions
+     * @property Apartment     $apartment
+     * @property House         $house
+     * @property RealtyType    $realtyType
+     * @property ServiceType   $serviceType
+     * @property District      $district
+     *
+     * @method getActionForModel(ActiveRecord $this) parses and processes model->actions, generates @property newPrice if the model is linked to
+     *         action discount
      */
     class Realty extends ActiveRecord{
 
@@ -185,39 +188,49 @@
         public function afterFind(){
             $mark = new Markdown();
             $this->short_description = $mark->parse($this->short_description);
-            $this->full_description =  $mark->parse($this->full_description);
+            $this->full_description = $mark->parse($this->full_description);
             $this->getActionForModel($this);
         }
 
-        public static function getModelWithActionName($name, $limit){
-            return Action::findOne(['name' => $name])
-                         ->getActionModels()
-                         ->joinWith('model')
-                         ->where([
-                                     'status' => [
-                                         'active',
-                                         'deposit'
-                                     ]
-                                 ])
-                         ->orderBy(['id' => SORT_DESC])
-                         ->limit($limit)
-                         ->all();
+        /**
+         * @param string  $name  name for action
+         * @param integer $limit limits the size, if not specified returns all records
+         *
+         * @return array|\yii\db\ActiveRecord[]
+         */
+        public static function getModelWithActionName($name, $limit = null){
+            return self::getDb()
+                       ->cache(function($db) use ($name, $limit){
+                           return Action::findOne(['name' => $name])
+                                        ->getActionModels()
+                                        ->joinWith('model')
+                                        ->where(['status' => ['active','deposit']])
+                                        ->orderBy(['id' => SORT_DESC])
+                                        ->limit($limit)
+                                        ->all();
+                       });
         }
 
+        /**
+         * Combine and formatting coordinates realty for markers on the map
+         * @return array
+         */
         public static function getMarkerData(){
-            $models = self::find()
-                          ->where([
-                                      'status' => [
-                                          'active',
-                                          'deposit'
-                                      ]
-                                  ])
-                          ->all();
+            $models = self::getDb()
+                          ->cache(function($db){
+                              return self::find()
+                                         ->where([
+                                                     'status' => [
+                                                         'active',
+                                                         'deposit'
+                                                     ]
+                                                 ])
+                                         ->all();
+                          });
             $markersData = [];
             foreach($models as $realty){
                 $coord = explode(';', $realty->map_coord);
-                $content = Yii::$app->getView()
-                                    ->render('_map_prev', ['model' => $realty]);
+                $content = Yii::$app->controller->renderPartial('_map_prev', ['model' => $realty]);
                 $markersData[] = [
                     'position' => [
                         'lat' => $coord[0] * 1,

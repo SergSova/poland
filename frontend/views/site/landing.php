@@ -6,12 +6,14 @@
      * @var \frontend\models\Callback      $callback
      */
 
+    use common\models\Action;
     use common\models\Realty;
     use frontend\assets\LandingAsset;
     use frontend\models\Search;
     use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use yii\helpers\Url;
     use yii\web\View;
+    use yii\widgets\Pjax;
 
     $this->title = 'Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
     $this->registerMetaTag([
@@ -25,13 +27,11 @@
 
     LandingAsset::register($this);
 
-    $hot = Realty::getModelWithActionName('hot', 4);
+        $markersData = json_encode(Realty::getMarkerData());
 
-    $markersData = json_encode(Realty::getMarkerData());
+        $mapConfig = json_encode(Yii::$app->params['mapConfig']);
 
-    $mapConfig = json_encode(Yii::$app->params['mapConfig']);
-
-    $searchModel = new Search();
+        $searchModel = new Search();
 
     $MapInit = <<<JS
 mapInit({$mapConfig});
@@ -101,7 +101,7 @@ JS;
         <h2 class="mypallete-text center">Горячие предложения недвижимости - Дома</h2>
         <div class="row">
             <?php
-                foreach($hot as $realty):
+                foreach(Realty::getModelWithActionName('hot', 4) as $realty):
                     ?>
                     <?= $this->render('_hot_item', ['model' => $realty->model]) ?>
                     <?php
@@ -110,7 +110,10 @@ JS;
         </div>
         <div class="row">
             <div class="col s12 m4 offset-m4">
-                <a href="<?= Url::to(['site/catalog']) ?>" class="btn fullWidth red waves-effect waves-light">Все горячие предложения</a>
+                <a href="<?= Url::to([
+                                         'site/catalog',
+                                         'Search[action_id]' => Action::findOne(['name' => 'hot'])->id
+                                     ]) ?>" class="btn fullWidth red waves-effect waves-light">Все горячие предложения</a>
             </div>
         </div>
     </div>
@@ -264,6 +267,6 @@ JS;
     <li><a href="#map-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Карта"></a></li>
     <li><a href="#hot-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Горячие предложения"></a></li>
     <li><a href="#videoreview-box" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Видео обзор"></a></li>
-    <li><a href="#technology" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Технология"></a></li>
+    <li><a href="#about" class="tooltipped" data-position="left" data-delay="50" data-tooltip="О нас"></a></li>
     <li><a href="#contacts" class="tooltipped" data-position="left" data-delay="50" data-tooltip="Контакты"></a></li>
 </ul>

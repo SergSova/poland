@@ -22,6 +22,9 @@
      * @property Realty[]      $models
      */
     class Action extends \yii\db\ActiveRecord{
+        public $dateS;
+        public $dateE;
+
         /**
          * @inheritdoc
          */
@@ -72,7 +75,10 @@
                 [
                     [
                         'icon',
-                        'value'
+                        'value',
+                        'dateS',
+                        'dateE',
+
                     ],
                     'string',
                     'max' => 255
@@ -117,6 +123,22 @@
                         ->viaTable('nad_action_model', ['action_id' => 'id']);
         }
 
+        public function afterFind(){
+            $this->dateS = date('m/d/Y', $this->date_start);
+            $this->dateE = date('m/d/Y', $this->date_end);
+        }
+
+        public function beforeSave($insert){
+            $this->date_start = strtotime($this->dateS);
+            $this->date_end = strtotime($this->dateE);
+
+            return parent::beforeSave($insert);
+        }
+
+        /**
+         * Method to upload icon for action
+         * @return bool
+         */
         public function upload(){
             $file = UploadedFile::getInstance($this, 'icon');
             if($file){
@@ -133,11 +155,22 @@
                 }
             }
             $this->icon = $this->oldAttributes['icon'];
+
             return true;
         }
 
+        /**
+         * @return string generate full URL path to icon
+         */
         public function getImgPath(){
             return Yii::getAlias('@wwwUrl').DIRECTORY_SEPARATOR.$this->icon;
         }
 
+        public static function getAll(){
+            return self::getDb()
+                         ->cache(function(){
+                             return self::find()
+                                          ->all();
+                         });
+        }
     }

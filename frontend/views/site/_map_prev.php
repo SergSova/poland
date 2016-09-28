@@ -4,20 +4,26 @@
     /**
      * @var \common\models\Realty $model
      */
-
-    $realtyType = $model->realtyType->realty_table;
+    $realtyType_id = $model->realty_type_id;
+    $realtyType = \common\models\Realty::getDb()
+                                       ->cache(function() use ($realtyType_id){
+                                           return \common\models\RealtyType::findOne($realtyType_id)->realty_table;
+                                       }, 3600);
 ?>
 
 <div class="card info-window">
     <div class="card-image left">
-        <img class="responsive-img" src="<?= Yii::getAlias('@storageUrl').'/'.$model->$realtyType->cover?>">
+        <img class="responsive-img" src="<?= Yii::getAlias('@storageUrl').'/'.$model->$realtyType->cover ?>">
     </div>
     <div class="card-content left">
         <div class="info center">
-            <p class="price"><?= $model->price?> руб</p>
-            <p class="subtitle"><?= $model->address?></p>
+            <p class="price"><?= $model->price ?> руб</p>
+            <p class="subtitle"><?= $model->address ?></p>
         </div>
-        <p class="description"><?= $model->short_description?></p>
+        <p class="description"><?= $model->short_description ?></p>
     </div>
-    <a href="<?= Url::to(['site/realty', 'id'=> $model->id])?>" class="btn mypallete fullWidth waves-effect waves-light">Подробнее</a>
+    <a href="<?= Url::to([
+                             'site/realty',
+                             'id' => $model->id
+                         ]) ?>" class="btn mypallete fullWidth waves-effect waves-light">Подробнее</a>
 </div>

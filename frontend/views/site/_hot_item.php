@@ -6,13 +6,11 @@
      * @var \common\models\Realty $model
      */
 
-    $realtyType = $model->realtyType->realty_table;
-
-    $js = <<<JS
-    $('.tooltipped').tooltip({delay: 50});
-JS;
-
-    $this->registerJs($js, 3);
+    $realtyType_id = $model->realty_type_id;
+    $realtyType = \common\models\Realty::getDb()
+                                       ->cache(function() use ($realtyType_id){
+                                           return \common\models\RealtyType::findOne($realtyType_id)->realty_table;
+                                       }, 3600);
 ?>
 <div class="col s12 m6 l3">
     <div class="card catalog-item hoverable">
@@ -23,7 +21,7 @@ JS;
             <div class="card-image">
                 <div class="action-ico">
                     <?php foreach($model->actions as $action): ?>
-                        <img src="<?=$action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
+                        <img src="<?= $action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
                     <?php endforeach; ?>
                 </div>
                 <img class="responsive-img"

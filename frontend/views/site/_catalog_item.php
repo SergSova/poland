@@ -2,7 +2,11 @@
     use yii\helpers\Url;
     /** @var \common\models\Realty $model */
 
-    $realtyType = $model->realtyType->realty_table;
+    $realtyType_id = $model->realty_type_id;
+    $realtyType = \common\models\Realty::getDb()
+                                       ->cache(function() use ($realtyType_id){
+                                           return \common\models\RealtyType::findOne($realtyType_id)->realty_table;
+                                       }, 3600);
 ?>
 <div class="col s12 m6 l4">
     <div class="card catalog-item hoverable">

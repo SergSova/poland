@@ -8,8 +8,8 @@
     /**
      * This is the model class for table "{{%district}}".
      *
-     * @property integer $id
-     * @property string $name
+     * @property integer  $id
+     * @property string   $name
      *
      * @property Realty[] $realties
      */
@@ -53,5 +53,13 @@
          */
         public function getRealties(){
             return $this->hasMany(Realty::className(), ['district_id' => 'id']);
+        }
+
+        public static function getAll(){
+            return self::getDb()
+                       ->cache(function(){
+                           return self::find()
+                                      ->all();
+                       });
         }
     }

@@ -1,12 +1,15 @@
 <?php
     namespace frontend\models;
 
+    use common\models\Apartment;
+    use common\models\House;
     use common\models\Realty;
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
-    use yii\db\Query;
 
     class Search extends Model{
+        public $action_id;
+
         public $districtId;
         public $realtyTypeId;
         public $serviceTypeId;
@@ -19,31 +22,39 @@
         public $apartment_rooms;
 
         public static function getPriceInterval($realtyTypeId){
-            $query = new Query();
-            $price = $query->select('price')
-                           ->from(Realty::tableName())
-                           ->where(['realty_type_id' => $realtyTypeId]);
-            $minPrice = $price->min('price');
-            $maxPrice = $price->max('price');
+            $minPrice = Realty::find()
+                              ->where(['realty_type_id' => $realtyTypeId])
+                              ->min('price');
+            $maxPrice = Realty::find()
+                              ->where(['realty_type_id' => $realtyTypeId])
+                              ->max('price');
 
-            return [$minPrice, $maxPrice];
+            return [
+                $minPrice,
+                $maxPrice
+            ];
         }
 
         public static function getInterval($field, $table){
-            $className = 'common\models\\'.ucfirst($table);
-            $query = new Query();
-            $prop = $query->select($field)
-                          ->from($className::tableName());
-            $minProp = $prop->min($field);
-            $maxProp = $prop->max($field);
 
-            return [$minProp, $maxProp];
+            /** @var Apartment|House $className */
+            $className = 'common\models\\'.ucfirst($table);
+            $minProp = $className::find()
+                                 ->min($field);
+            $maxProp = $className::find()
+                                 ->max($field);
+
+            return [
+                $minProp,
+                $maxProp
+            ];
         }
 
         public function rules(){
             return [
                 [
                     [
+                        'action_id',
                         'districtId',
                         'realtyTypeId',
                         'serviceTypeId'
@@ -66,13 +77,24 @@
             ];
         }
 
+        public function attributeLabels(){
+            return [
+                'action_id' => 'Акции'
+            ];
+        }
+
         public function search($params){
             $query = Realty::find()
                            ->joinWith([
                                           'house h',
                                           'apartment ap'
                                       ]);
-            $query->where(['status'=>['active', 'deposit']]);
+            $query->where([
+                              'status' => [
+                                  'active',
+                                  'deposit'
+                              ]
+                          ]);
             $dataProvider = new ActiveDataProvider([
                                                        'query' => $query,
                                                        'pagination' => [
@@ -90,40 +112,45 @@
             $hDist = explode(';', $this->house_distance);
             $aArea = explode(';', $this->apartment_area);
 
-                $query->andFilterWhere([
-                                           'district_id' => $this->districtId,
-                                           'realty_type_id' => $this->realtyTypeId,
-                                           'service_type_id' => $this->serviceTypeId
-                                       ])
-                      ->andFilterWhere([
-                                           'between',
-                                           'price',
-                                           $price[0],
-                                           $price[1]
-                                       ])
-                      ->andFilterWhere([
-                                           'between',
-                                           'h.house_area',
-                                           $hArea[0],
-                                           $hArea[1]
-                                       ])
-                      ->andFilterWhere([
-                                           'between',
-                                           'h.distance',
-                                           $hDist[0],
-                                           $hDist[1]
-                                       ])
-                      ->andFilterWhere([
-                                           'between',
-                                           'ap.area',
-                                           $aArea[0],
-                                           $aArea[1]
-                                       ])
-                      ->andFilterWhere([
-                                           'in',
-                                           'ap.room_count',
-                                           $this->apartment_rooms,
-                                       ]);
+            if($this->action_id){
+                $query->joinWith(['actionModels'])
+                      ->andFilterWhere(['action_id' => $this->action_id]);
+            }
+
+            $query->andFilterWhere([
+                                       'district_id' => $this->districtId,
+                                       'realty_type_id' => $this->realtyTypeId,
+                                       'service_type_id' => $this->serviceTypeId
+                                   ])
+                  ->andFilterWhere([
+                                       'between',
+                                       'price',
+                                       $price[0],
+                                       $price[1]
+                                   ])
+                  ->andFilterWhere([
+                                       'between',
+                                       'h.house_area',
+                                       $hArea[0],
+                                       $hArea[1]
+                                   ])
+                  ->andFilterWhere([
+                                       'between',
+                                       'h.distance',
+                                       $hDist[0],
+                                       $hDist[1]
+                                   ])
+                  ->andFilterWhere([
+                                       'between',
+                                       'ap.area',
+                                       $aArea[0],
+                                       $aArea[1]
+                                   ])
+                  ->andFilterWhere([
+                                       'in',
+                                       'ap.room_count',
+                                       $this->apartment_rooms,
+                                   ]);
 
             return $dataProvider;
         }

@@ -35,17 +35,18 @@
         </div>
         <div class="col s12 m12 l9 relative">
             <div class="row no-marg-bot">
-                <?php Pjax::begin(['id' => 'realty-list']); ?>    <?= ListView::widget([
-                                                                                           'dataProvider' => $dataProvider,
-                                                                                           'itemView' => '_catalog_item',
-                                                                                           'layout' => "<div class='row'>{items}</div><div class='row center'>{pager}</div>",
-                                                                                           'pager' => [
-                                                                                               'options' => ['class' => 'pagination'],
-                                                                                               'prevPageLabel' => '<i class="material-icons">chevron_left</i>',
-                                                                                               'nextPageLabel' => '<i class="material-icons">chevron_right</i>',
-                                                                                               'pageCssClass' => 'waves-effect'
-                                                                                           ]
-                                                                                       ]) ?>
+                <?php Pjax::begin(['id' => 'realty-list']); ?>
+                <?= ListView::widget([
+                                         'dataProvider' => $dataProvider,
+                                         'itemView' => '_catalog_item',
+                                         'layout' => "<div class='row'>{items}</div><div class='row center'>{pager}</div>",
+                                         'pager' => [
+                                             'options' => ['class' => 'pagination'],
+                                             'prevPageLabel' => '<i class="material-icons">chevron_left</i>',
+                                             'nextPageLabel' => '<i class="material-icons">chevron_right</i>',
+                                             'pageCssClass' => 'waves-effect'
+                                         ]
+                                     ]) ?>
                 <?php Pjax::end(); ?>
             </div>
         </div>

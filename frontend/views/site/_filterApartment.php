@@ -3,6 +3,7 @@
      * @var \yii\web\View           $this
      * @var \frontend\models\Search $searchModel
      */
+    use common\models\Action;
     use common\models\District;
     use frontend\models\Search;
     use frontend\widgets\SliderWidget\SliderWidget;
@@ -18,11 +19,16 @@
 <?php Pjax::begin(['id' => 'apartment-filter']) ?>
 <?php $apartmentForm = ActiveForm::begin([
                                              'method' => 'GET',
-                                             'action' => ['catalog'],
-                                             'options' => ['data-pjax' => true]
+                                             'action' => 'catalog',
+                                             'options' => [
+                                                 'data-pjax' => (Yii::$app->controller->action->id == 'catalog') ? true : false,
+//                                                 'class' => 'filter-form'
+                                             ],
+                                             'id'=>'form-apartment'
                                          ]); ?>
 <div class="row">
-
+    <?= $apartmentForm->field($searchModel, 'action_id', ['options' => ['class' => 'input-field marg-top col s10 offset-s1']])
+                      ->dropDownList(ArrayHelper::map(Action::getAll(), 'id', 'title'), ['prompt' => 'Все квартиры']) ?>
     <?= $apartmentForm->field($searchModel, 'districtId', ['options' => ['class' => 'input-field marg-top col s10 offset-s1']])
                       ->dropDownList(ArrayHelper::map(District::find()
                                                               ->all(), 'id', 'name'), ['prompt' => 'Все направления'])

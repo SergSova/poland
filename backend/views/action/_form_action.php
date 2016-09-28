@@ -16,8 +16,8 @@
              ->textInput(['placeholder'=>'hot, discount и т.д.']) ?>
     <?= $form->field($model, 'description')
              ->textarea() ?>
-    <?= $form->field($model, 'date_start') ?>
-    <?= $form->field($model, 'date_end') ?>
+    <?= $form->field($model, 'dateS')->input('date') ?>
+    <?= $form->field($model, 'dateE')->input('date') ?>
     <?= $form->field($model, 'icon')
              ->fileInput() ?>
     <?= $form->field($model, 'value')

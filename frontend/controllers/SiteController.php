@@ -38,12 +38,14 @@
         }
 
         public function actionIndex(){
-
             return $this->render('landing', [
                 'feedback' => new Feedback(),
-                'videoReview' => VideoReview::find()
-                                            ->limit(1)
-                                            ->one()
+                'videoReview' => VideoReview::getDb()
+                                            ->cache(function(){
+                                                return VideoReview::find()
+                                                                  ->limit(1)
+                                                                  ->one();
+                                            })
             ]);
         }
 
@@ -72,8 +74,11 @@
 
         public function actionVideoReview(){
             return $this->render('video-review', [
-                'models' => VideoReview::find()
-                                       ->all()
+                'models' => VideoReview::getDb()
+                                       ->cache(function(){
+                                           return VideoReview:: find()
+                                                             ->all();
+                                       })
             ]);
         }
 
@@ -123,8 +128,11 @@
         public function actionService($id = null){
             if(is_null($id)){
                 return $this->render('service', [
-                    'model' => Service::find()
-                                      ->all()
+                    'model' => Service::getDb()
+                                      ->cache(function(){
+                                          return Service::find()
+                                                        ->all();
+                                      })
                 ]);
             }
 
