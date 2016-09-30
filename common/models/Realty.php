@@ -19,6 +19,9 @@
      * @property string        $short_description
      * @property string        $full_description
      * @property string        $status
+     * @property integer       $create_at
+     * @property integer       $update_at
+     *
      *
      * @property ActionModel[] $actionModels
      * @property Action[]      $actions

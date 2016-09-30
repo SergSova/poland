@@ -1,6 +1,8 @@
 <?php
     namespace frontend\controllers;
 
+    use common\models\Action;
+    use common\models\ActionModel;
     use common\models\Callback;
     use common\models\Feedback;
     use common\models\Realty;
@@ -9,6 +11,11 @@
     use frontend\models\Search;
     use frontend\models\ServiceCallModel;
     use Yii;
+    use yii\caching\ChainedDependency;
+    use yii\caching\DbDependency;
+    use yii\db\Query;
+    use yii\filters\HttpCache;
+    use yii\filters\PageCache;
     use yii\web\Controller;
     use yii\filters\VerbFilter;
     use yii\web\NotFoundHttpException;
@@ -26,6 +33,32 @@
                         'service-call' => ['post'],
                     ],
                 ],
+                [
+                    'class' => PageCache::className(),
+                    'only' => ['index','catalog'],
+                    'duration' => 3600 * 24 * 30,
+                    'dependency' => [
+                        'class' => ChainedDependency::className(),
+                        'dependencies' => [
+                            new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Realty::tableName()]),
+                            new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Action::tableName()]),
+                        ],
+                    ],
+                ],
+                //                [
+                //                    'class' => HttpCache::className(),
+                //                    'only' => ['realty'],
+                //                    'etagSeed' => function($action, $params){
+                //                        $realty = Realty::findOne(Yii::$app->request->get('id'));
+                //                        return serialize([
+                //                                             $realty->address,
+                //                                             $realty->price,
+                //                                             $realty->status,
+                //                                             $realty->short_description,
+                //                                             $realty->full_description,
+                //                                         ]);
+                //                    },
+                //                ],
             ];
         }
 

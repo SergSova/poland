@@ -17,6 +17,8 @@
      * @property integer       $date_end
      * @property string        $value
      * @property string        $status
+     * @property integer       $create_at
+     * @property integer       $update_at
      *
      * @property ActionModel[] $actionModels
      * @property Realty[]      $models
