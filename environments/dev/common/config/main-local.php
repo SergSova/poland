@@ -3,7 +3,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=new_address',
+            'dsn' => 'mysql:host=localhost;dbname=poland',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
