@@ -1,5 +1,5 @@
 <?php
-    Yii::setAlias('@webroot', __DIR__.'/../../www');
+    Yii::setAlias('@webroot', __DIR__.'/../../www/');
     Yii::setAlias('@web', '/');
     return [
         'jsCompressor' => 'java -jar compiler.jar --js {from} --js_output_file {to} --jscomp_off uselessCode --warning_level QUIET',
