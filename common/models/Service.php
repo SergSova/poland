@@ -2,10 +2,9 @@
 
     namespace common\models;
 
-    use Yii;
+    use common\models\Behaviors\FileSaveBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\caching\DbDependency;
-    use yii\web\UploadedFile;
 
     /**
      * This is the model class for table "{{%service}}".
@@ -33,6 +32,7 @@
                     'updatedAtAttribute' => 'update_at',
                     'value' => time(),
                 ],
+                ['class' => FileSaveBehavior::className(),],
             ];
         }
 
@@ -84,24 +84,6 @@
             ];
         }
 
-        public function beforeSave($insert){
-            if(!empty($_FILES) && $icon = UploadedFile::getInstance($this, 'icon')){
-                if(!is_dir(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.'service')){
-                    mkdir(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.'service', 0777, true);
-                }
-                $filename = 'service'.DIRECTORY_SEPARATOR.$icon->name;
-                if(!file_exists(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.$filename)){
-                    $icon->saveAs(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.$filename);
-                }
-                $this->icon = $filename;
-            }
-
-            return parent::beforeSave($insert);
-        }
-
-        public function getImgPath(){
-            return Yii::getAlias('@storageUrl').DIRECTORY_SEPARATOR.$this->icon;
-        }
 
         public static function getAll(){
             return self::getDb()

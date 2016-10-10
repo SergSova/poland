@@ -10,4 +10,6 @@ return [
         ],
         'zoom' => 9
     ],
+    'storageUrl' => 'http://poland.local/storage/',
+    'wwwUrl' => 'http://poland.local/',
 ];

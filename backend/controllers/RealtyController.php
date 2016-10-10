@@ -4,7 +4,7 @@
 
     use backend\components\RealtyModel;
     use backend\components\RealtyPhoto;
-    use backend\models\RealtySearch;
+    use backend\models\Search\RealtySearch;
     use backend\models\UploadModel;
     use common\models\RealtyType;
     use Yii;

@@ -1,11 +1,11 @@
 <?php
 
-    namespace common\models;
+    namespace common\models\Behaviors;
 
     use yii\base\Behavior;
 
     class ActionForModelBehavior extends Behavior{
-        public    $price;
+        public $inputPrice = 'price';
         protected $name = 'newPrice';
 
         public function attach($owner){

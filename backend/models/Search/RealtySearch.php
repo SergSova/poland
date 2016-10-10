@@ -1,7 +1,6 @@
 <?php
-    namespace backend\models;
+    namespace backend\models\Search;
 
-    use Yii;
     use yii\base\Model;
     use yii\data\ActiveDataProvider;
     use common\models\Realty;

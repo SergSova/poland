@@ -2,13 +2,10 @@
 
     namespace common\models;
 
-    use Yii;
+    use common\models\Behaviors\ActionBehavior;
+    use common\models\Behaviors\FileSaveBehavior;
     use yii\behaviors\TimestampBehavior;
     use yii\caching\DbDependency;
-    use yii\db\Expression;
-    use yii\debug\models\search\Db;
-    use yii\helpers\ArrayHelper;
-    use yii\web\UploadedFile;
 
     /**
      * This is the model class for table "{{%action}}".
@@ -28,8 +25,6 @@
      * @property Realty[]      $models
      */
     class Action extends \yii\db\ActiveRecord{
-        public $dateS;
-        public $dateE;
 
         /**
          * @inheritdoc
@@ -42,11 +37,10 @@
             return [
                 [
                     'class'              => TimestampBehavior::className(),
-                    'createdAtAttribute' => 'create_at',
-                    'updatedAtAttribute' => 'update_at',
                     'value'              => time(),
                 ],
                 ['class' => ActionBehavior::className()],
+                ['class' => FileSaveBehavior::className(),],
             ];
         }
 
@@ -62,10 +56,13 @@
                 [['date_start', 'date_end',], 'integer',],
                 ['title', 'string', 'max' => 150,],
                 ['name', 'string', 'max' => 50,],
-                [['icon', 'value', 'dateS', 'dateE'], 'string', 'max' => 255,],
+                [['icon', 'value'], 'string', 'max' => 255,],
+                ['title', 'unique',],
+
+                [['dateS', 'dateE'], 'string'],
                 ['dateS', 'default', 'value' => date(DATE_ATOM, time()),],
                 ['dateE', 'default', 'value' => date(DATE_ATOM, strtotime('12-12-2036')),],
-                ['title', 'unique',],
+
             ];
         }
 
@@ -117,5 +114,14 @@
                         ->viaTable(ActionModel::tableName(), ['action_id' => 'id']);
         }
 
-
+        /**
+         * @return mixed Return caching data
+         */
+        public static function getAll(){
+            return self::getDb()
+                       ->cache(function(){
+                           return self::find()
+                                      ->all();
+                       }, 3600 * 24 * 30, new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.self::tableName()]));
+        }
     }

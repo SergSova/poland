@@ -2,9 +2,9 @@
 
 namespace backend\controllers;
 
+use backend\models\Search\DistrictSearch;
 use Yii;
 use common\models\District;
-use backend\models\DistrictSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

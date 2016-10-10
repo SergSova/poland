@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\Search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\District;
+use common\models\VideoReview;
 
 /**
- * DistrictSearch represents the model behind the search form about `common\models\District`.
+ * VideoReviewSearch represents the model behind the search form about `common\models\VideoReview`.
  */
-class DistrictSearch extends District
+class VideoReviewSearch extends VideoReview
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class DistrictSearch extends District
     {
         return [
             [['id'], 'integer'],
-            [['name'], 'safe'],
+            [['video', 'description', 'title'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class DistrictSearch extends District
      */
     public function search($params)
     {
-        $query = District::find();
+        $query = VideoReview::find();
 
         // add conditions that should always apply here
 
@@ -62,7 +62,9 @@ class DistrictSearch extends District
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'video', $this->video])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

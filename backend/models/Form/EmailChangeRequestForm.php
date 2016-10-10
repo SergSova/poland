@@ -1,8 +1,10 @@
 <?php
 
-    namespace backend\models;
+    namespace backend\models\form;
 
+    use common\models\User;
     use Yii;
+    use yii\base\InvalidParamException;
     use yii\base\Model;
 
     class EmailChangeRequestForm extends Model{
@@ -56,7 +58,5 @@
 
                 return $user->save(false);
             }
-
-            return false;
         }
     }

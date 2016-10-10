@@ -20,7 +20,7 @@
     <?= $form->field($model, 'description')
              ->textarea(['rows' => 6]) ?>
 
-    <?= Html::img(Yii::getAlias('@storageUrl').DIRECTORY_SEPARATOR.$model->icon, ['class' => 'thumbnail' ,'alt'=>'no_foto']) ?>
+    <?= Html::img($model->imgPath, ['class' => 'thumbnail' ,'alt'=>'no_foto']) ?>
 
     <?= $form->field($model, 'icon')
              ->fileInput()?>

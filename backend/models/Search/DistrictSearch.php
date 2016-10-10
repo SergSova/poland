@@ -1,16 +1,16 @@
 <?php
 
-namespace backend\models;
+namespace backend\models\Search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Realty;
+use common\models\District;
 
 /**
- * Search represents the model behind the search form about `common\models\Realty`.
+ * DistrictSearch represents the model behind the search form about `common\models\District`.
  */
-class Search extends Realty
+class DistrictSearch extends District
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class Search extends Realty
     public function rules()
     {
         return [
-            [['id', 'realty_type_id', 'service_type_id', 'district_id', 'price'], 'integer'],
-            [['address', 'map_coord', 'description', 'status'], 'safe'],
+            [['id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class Search extends Realty
      */
     public function search($params)
     {
-        $query = Realty::find();
+        $query = District::find();
 
         // add conditions that should always apply here
 
@@ -60,16 +60,9 @@ class Search extends Realty
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'realty_type_id' => $this->realty_type_id,
-            'service_type_id' => $this->service_type_id,
-            'district_id' => $this->district_id,
-            'price' => $this->price,
         ]);
 
-        $query->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'map_coord', $this->map_coord])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'status', $this->status]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

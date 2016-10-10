@@ -10,19 +10,17 @@
     use common\models\Realty;
     use frontend\assets\LandingAsset;
     use frontend\models\Search;
-    use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use yii\helpers\Url;
     use yii\web\View;
-    use yii\widgets\Pjax;
 
-    $this->title = 'Агентство недвижимости и застройщики в Москве - Новый адрес, подберем Вам дом';
+    $this->title = 'Агентство недвижимости';
     $this->registerMetaTag([
                                'name' => 'description',
-                               'content' => 'Агентство недвижимости в Москве - Новый адрес, широкий выбор домов для покупки или аренды, мы являемся компанией застройщиком'
+                               'content' => 'Агентство недвижимости'
                            ]);
     $this->registerMetaTag([
                                'name' => 'keywords',
-                               'content' => 'Агентство недвижимости, Москва недвижимость, Новый адрес'
+                               'content' => 'Агентство недвижимости'
                            ]);
 
     LandingAsset::register($this);
@@ -51,7 +49,6 @@ JS;
                 </div>
                 <div class="col s12 m8 l9 mypallete-text center-on-small-only">
                     <h1 class="hide-on-med-and-down general-title">Дома от застройщика<br>Новый Адрес</h1>
-                    <!--                    <h2 class="hide-on-small-only">Мы найдем дом Вашей мечты</h2>-->
                     <p class="flow-text">Дом там, где сердце! Мы поможем Вам и Вашей семье найти место, где вы будете чувствовать себя, как дома!</p>
                 </div>
             </div>

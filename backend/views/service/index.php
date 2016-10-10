@@ -11,11 +11,14 @@
     <?= Html::a('Создать Услугу', ['service/create'], ['class' => 'btn btn-primary']) ?>
     <?= GridView::widget([
                              'dataProvider' => $dataProvider,
-                             'columns' => [
+                             'columns'      => [
                                  ['class' => 'yii\grid\SerialColumn'],
                                  'title',
                                  'imgPath:image',
-                                 ['class' => 'yii\grid\ActionColumn'],
-                             ]
+                                 [
+                                     'class'    => \yii\grid\ActionColumn::className(),
+                                     'template' => '{update} {delete}',
+                                 ],
+                             ],
                          ]) ?>
 </div>

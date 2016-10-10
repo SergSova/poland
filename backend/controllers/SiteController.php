@@ -1,10 +1,10 @@
 <?php
     namespace backend\controllers;
 
-    use backend\models\EmailChangeRequestForm;
-    use backend\models\LoginForm;
-    use backend\models\PasswordResetRequestForm;
-    use backend\models\ResetPasswordForm;
+    use backend\models\form\EmailChangeRequestForm;
+    use backend\models\form\LoginForm;
+    use backend\models\form\PasswordResetRequestForm;
+    use backend\models\form\ResetPasswordForm;
     use common\models\Callback;
     use common\models\Feedback;
     use Yii;

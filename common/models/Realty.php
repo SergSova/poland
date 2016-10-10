@@ -2,13 +2,12 @@
 
     namespace common\models;
 
-    use cebe\markdown\Markdown;
+    use common\models\Behaviors\ActionForModelBehavior;
     use Yii;
     use yii\behaviors\TimestampBehavior;
     use yii\caching\ChainedDependency;
     use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
-    use yii\db\Expression;
 
     /**
      * This is the model class for table "{{%realty}}".
@@ -49,14 +48,9 @@
 
         public function behaviors(){
             return [
-                'discount' => [
-                    'class' => ActionForModelBehavior::className(),
-                    'price' => 'price',
-                ],
+                ['class' => ActionForModelBehavior::className(),],
                 [
                     'class' => TimestampBehavior::className(),
-                    'createdAtAttribute' => 'create_at',
-                    'updatedAtAttribute' => 'update_at',
                     'value' => time(),
                 ],
             ];
