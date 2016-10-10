@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "nad_callback".
+ * This is the model class for table "{{%callback}}".
  *
  * @property string $id
  * @property string $name
@@ -21,7 +21,7 @@ class Callback extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'nad_callback';
+        return '{{%callback}}';
     }
 
     /**
@@ -33,8 +33,6 @@ class Callback extends \yii\db\ActiveRecord
             [['name', 'subject', 'phone'], 'required'],
             [['name', 'subject'], 'string', 'max' => 50],
             [['phone'], 'string', 'max' => 25],
-            ['phone', 'match', 'pattern' => '/^\+?[78]{1}\d{10}$/i','message' => 'Не правильный формат телефона +7(8) 000 000 00 00'],
-
         ];
     }
 

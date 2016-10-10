@@ -8,11 +8,20 @@
     use yii\widgets\ListView;
     use yii\widgets\Pjax;
 
-    $this->title = 'catalog';
+    $this->title = 'Купить дом в подмосковье - недорого!';
+    $this->registerMetaTag([
+                               'name' => 'description',
+                               'content' => 'Хотите купить дом в подмосковье от застройщика? Значит Вам нужно к нам! Не только строим дома, но и помогаем с покупкой'
+                           ]);
+    $this->registerMetaTag([
+                               'name' => 'keywords',
+                               'content' => 'Купить дом недорого, дом в подмосковье, дом в Московской области, дом от застройщика, цены, каталог'
+                           ]);
     CatalogAsset::register($this);
 
 ?>
 <button class="hide-on-large-only" data-activates="mobile-filter" id="showFilter"><i class="material-icons">search</i></button>
+<h1 class="center catalog-title-h1">Дома в подмосковье от застройщика</h1>
 <div class="row">
     <div class="hide-on-med-and-down" id="filter-box">
         <div class="filter-box">

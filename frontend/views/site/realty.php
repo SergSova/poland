@@ -10,6 +10,7 @@
     use macgyer\yii2materializecss\widgets\form\ActiveForm;
     use yii\helpers\Url;
     use yii\web\View;
+    use yii\widgets\MaskedInput;
     use yii\widgets\Pjax;
 
     $this->title = 'Realty '.$realty->id;
@@ -131,19 +132,21 @@ JS;
                     <div class="divider"></div>
                     <h2 class="red-text">Акции</h2>
                     <?php foreach($realty->actions as $action): ?>
-                        <div class="row">
-                            <div class="col s3 col m2 col l2">
-                                <img src="<?= $action->imgPath ?>" class="img-thumbnail">
+                        <?php if($action->status = 'active'): ?>
+                            <div class="row">
+                                <div class="col s3 col m2 col l2">
+                                    <img src="<?= $action->imgPath ?>" class="img-thumbnail">
+                                </div>
+                                <div class="col s9 col m10 col l10 red-text">
+                                    <p><strong><?= $action->title ?></strong></p>
+                                </div>
                             </div>
-                            <div class="col s9 col m10 col l10 red-text">
-                                <p><strong><?= $action->title ?></strong></p>
-                            </div>
-                        </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 <?php endif ?>
 
                 <div class="divider"></div>
-                <p class="description flow-text"><?= $realty->short_description ?></p>
+                <p class="flow-text"><?= $realty->br_short_description ?></p>
                 <div class="divider"></div>
                 <?= $this->render('_view'.ucfirst($realtyTypeName), ['model' => $realty->$realtyTypeName]) ?>
             </div>
@@ -152,7 +155,7 @@ JS;
 </div>
 <div class="section">
     <div class="container">
-        <p class="description-r flow-text"><?= $realty->full_description ?></p>
+        <p class="flow-text text-justify"><?= $realty->br_full_description ?></p>
     </div>
 </div>
 <div class="section map-wrapper fullHeight">
@@ -184,7 +187,7 @@ JS;
                                        ]) ?>
         <div class="row">
             <?= $rcf->field($requestCall, 'phone')
-                    ->widget(\yii\widgets\MaskedInput::className(), ['mask' => '+7 (999) 999 99 99']) ?>
+                    ->widget(MaskedInput::className(), Yii::$app->params['phoneMask']) ?>
             <?= $rcf->field($requestCall, 'name') ?>
             <?= $rcf->field($requestCall, 'subject')
                     ->hiddenInput()

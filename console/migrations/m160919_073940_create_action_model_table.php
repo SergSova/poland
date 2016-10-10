@@ -15,11 +15,14 @@
                 'model_id' => $this->integer()
                                    ->notNull(),
                 'action_id' => $this->integer()
-                                    ->notNull()
+                                    ->notNull(),
+                'create_at' => $this->integer(),
+                'update_at' => $this->integer()
+
             ]);
 
-            $this->addForeignKey('FK_action_model_action', '{{%action_model}}', 'action_id', '{{%action}}', 'id');
-            $this->addForeignKey('FK_action_model_model', '{{%action_model}}', 'model_id', '{{%realty}}', 'id');
+            $this->addForeignKey('FK_action_model_action', '{{%action_model}}', 'action_id', '{{%action}}', 'id', 'CASCADE', 'CASCADE');
+            $this->addForeignKey('FK_action_model_model', '{{%action_model}}', 'model_id', '{{%realty}}', 'id', 'CASCADE', 'CASCADE');
             $this->createIndex('IX_action_model', '{{%action_model}}', [
                 'model_id',
                 'action_id'

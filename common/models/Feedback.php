@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 
 /**
- * This is the model class for table "nad_feedback".
+ * This is the model class for table "{{%feedback}}".
  *
  * @property string $id
  * @property string $name
@@ -22,7 +22,7 @@ class Feedback extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'nad_feedback';
+        return '{{%feedback}}';
     }
 
     /**

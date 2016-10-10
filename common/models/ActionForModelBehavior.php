@@ -20,9 +20,11 @@
         public function getActionForModel($event){
             $model = $this->owner;
             $actions = $model->actions;
-            foreach($actions as $action){
-                if($this->hasMethod($method = 'get'.ucfirst($action->name))){
-                    $this->$method($action->value);
+            if(!is_null($actions)){
+                foreach($actions as $action){
+                    if($action->status == 'active' && $this->hasMethod($method = 'get'.ucfirst($action->name))){
+                        $this->$method($action->value);
+                    }
                 }
             }
         }

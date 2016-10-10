@@ -4,7 +4,11 @@
 
     use cebe\markdown\Markdown;
     use Yii;
+    use yii\behaviors\TimestampBehavior;
+    use yii\caching\ChainedDependency;
+    use yii\caching\DbDependency;
     use yii\db\ActiveRecord;
+    use yii\db\Expression;
 
     /**
      * This is the model class for table "{{%realty}}".
@@ -48,6 +52,12 @@
                 'discount' => [
                     'class' => ActionForModelBehavior::className(),
                     'price' => 'price',
+                ],
+                [
+                    'class' => TimestampBehavior::className(),
+                    'createdAtAttribute' => 'create_at',
+                    'updatedAtAttribute' => 'update_at',
+                    'value' => time(),
                 ],
             ];
         }
@@ -150,7 +160,7 @@
          */
         public function getActions(){
             return $this->hasMany(Action::className(), ['id' => 'action_id'])
-                        ->viaTable('nad_action_model', ['model_id' => 'id']);
+                        ->viaTable(ActionModel::tableName(), ['model_id' => 'id']);
         }
 
         /**
@@ -189,9 +199,6 @@
         }
 
         public function afterFind(){
-            $mark = new Markdown();
-            $this->short_description = $mark->parse($this->short_description);
-            $this->full_description = $mark->parse($this->full_description);
             $this->getActionForModel($this);
         }
 
@@ -202,16 +209,39 @@
          * @return array|\yii\db\ActiveRecord[]
          */
         public static function getModelWithActionName($name, $limit = null){
-            return self::getDb()
-                       ->cache(function($db) use ($name, $limit){
-                           return Action::findOne(['name' => $name])
-                                        ->getActionModels()
-                                        ->joinWith('model')
-                                        ->where(['status' => ['active','deposit']])
-                                        ->orderBy(['id' => SORT_DESC])
-                                        ->limit($limit)
-                                        ->all();
-                       });
+            $dependency = new ChainedDependency([
+                                                    'dependencies' => [
+                                                        new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Realty::tableName()]),
+                                                        new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Action::tableName()]),
+                                                        new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.ActionModel::tableName()]),
+                                                    ],
+                                                ]);
+
+            $cache = self::getDb()
+                         ->cache(function($db) use ($name, $limit){
+                             $actions = Action::findOne(['name' => $name]);
+                             if(!is_null($actions) && $actions->status = 'active'){
+                                 return $actions->getActionModels()
+                                                ->joinWith('model')
+                                                ->where([
+                                                            'status' => [
+                                                                'active',
+                                                                'deposit'
+                                                            ]
+                                                        ])
+                                                ->orderBy(['id' => SORT_DESC])
+                                                ->limit($limit)
+                                                ->all();
+                             }else{
+                                 return [];
+                             }
+                         }, 3600 * 24 * 30, $dependency);
+            $test = $dependency->getHasChanged($cache);
+            if($test){
+                Yii::$app->cache->flush();
+            }
+
+            return $cache;
         }
 
         /**
@@ -244,5 +274,20 @@
             }
 
             return $markersData;
+        }
+
+        public static function getAll(){
+            return self::getDb()
+                       ->cache(function(){
+                           return self::find()
+                                      ->all();
+                       }, 3600 * 24 * 30, new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.self::tableName()]));
+        }
+
+        public function getBr_short_description(){
+            return nl2br($this->short_description);
+        }
+        public function getBr_full_description(){
+            return nl2br($this->full_description);
         }
     }

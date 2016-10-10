@@ -20,7 +20,7 @@
             <p class="price"><?= $model->price ?> руб</p>
             <p class="subtitle"><?= $model->address ?></p>
         </div>
-        <p class="description"><?= $model->short_description ?></p>
+        <div class="description"><p><?= $model->br_short_description ?></p></div>
     </div>
     <a href="<?= Url::to([
                              'site/realty',

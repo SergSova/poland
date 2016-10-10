@@ -32,7 +32,10 @@ html {
         width: 80%;
     }
 }
-
+.section-title{
+    margin: 0!important;
+    padding: 1.5rem 0;
+}
 .mypallete {
     background-color: #2e7cb0 !important;
 }
@@ -163,7 +166,9 @@ html {
 .section h2 {
     margin: 1.424rem 0 1.424rem 0;
 }
-
+.btn-to-map{
+    font-size: 1rem;
+}
 .sectionWithBg {
     background-image: url(../img/bg.jpg);
     background-size: cover;
@@ -247,6 +252,8 @@ html {
     float: left;
     height: 500px;
     position: relative;
+}
+.filter-box{
     padding: 0 0.75rem;
 }
 
@@ -407,9 +414,11 @@ html {
 .tech-item .cover {
     width: 25%;
     float: left;
-    margin: 0 10px 10px 0;
+    margin: 17px 17px 0 0;
 }
-
+.tech-item h2{
+    text-align: left;
+}
 @media screen and (max-width: 768px) {
     .tech-item .cover {
         width: 100%;
@@ -418,9 +427,11 @@ html {
 
 .tech-item:nth-child(even) .cover {
     float: right;
-    margin: 0 0 10px 10px;
+    margin: 17px 0 0 17px;
 }
-
+.tech-item:nth-child(even) h2{
+    text-align: right;
+}
 .tech-item:after {
     content: '';
     display: block;
@@ -720,7 +731,6 @@ margin: 0;
 .info-window .description {
     font-size: 1.1rem;
     text-align: justify;
-    height: 120px;
 }
 
 .realty-data table {
@@ -805,6 +815,14 @@ margin: 0;
     width: 100%;
     z-index: 25;
 }
+@media screen and (max-width: 768px) {
+    .map-header {
+        font-size: 2rem;
+    }
+    .catalog-title-h1{
+        font-size: 2rem;
+    }
+}
 .description-r{
     text-align: justify;
 }
@@ -816,4 +834,46 @@ margin: 0;
     width: 40px;
     height: 40px;
     z-index: 400;
+}
+.about-description{
+    text-align: justify;
+}
+.about-list{
+    padding-left: 40px;
+    list-style: disc;
+}
+.about-list li{
+    list-style: inherit;
+}
+.service-footer .material-icons{
+    font-size: 3rem;
+    vertical-align: middle;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.text-justify{
+    text-align: justify;
+}
+.page-footer p{
+    margin: 0;
+}
+.contact-list p{
+    margin: 0;
+}
+.bold{
+    font-weight: 400;
+}
+.contact-item{
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 80%;
+}
+.contact-item p:not(.flow-text){
+    line-height: 1.2rem;
+    font-size: 1.3rem;
+    font-weight: 300;
+}
+.map-address{
+    margin-top: 20px;
+    border: 2px solid #2e7cb0;
 }

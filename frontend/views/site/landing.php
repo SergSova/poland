@@ -27,11 +27,11 @@
 
     LandingAsset::register($this);
 
-        $markersData = json_encode(Realty::getMarkerData());
+    $markersData = json_encode(Realty::getMarkerData());
 
-        $mapConfig = json_encode(Yii::$app->params['mapConfig']);
+    $mapConfig = json_encode(Yii::$app->params['mapConfig']);
 
-        $searchModel = new Search();
+    $searchModel = new Search();
 
     $MapInit = <<<JS
 mapInit({$mapConfig});
@@ -50,8 +50,8 @@ JS;
                     <img class="responsive-img" src="<?= Url::to('@web/img/big-logo.png') ?>">
                 </div>
                 <div class="col s12 m8 l9 mypallete-text center-on-small-only">
-                    <h1 class="hide-on-med-and-down">Новый Адрес</h1>
-                    <h2 class="hide-on-small-only">Мы найдем дом Вашей мечты</h2>
+                    <h1 class="hide-on-med-and-down general-title">Дома от застройщика<br>Новый Адрес</h1>
+                    <!--                    <h2 class="hide-on-small-only">Мы найдем дом Вашей мечты</h2>-->
                     <p class="flow-text">Дом там, где сердце! Мы поможем Вам и Вашей семье найти место, где вы будете чувствовать себя, как дома!</p>
                 </div>
             </div>
@@ -64,13 +64,13 @@ JS;
                 </div>
             </div>
         </div>
-        <button class="btn-floating mypallete lighten scrollDown hide-on-med-and-down waves-effect waves-light" data-target="#map-box"><i
-                class="large material-icons">keyboard_arrow_down</i></button>
+        <h2 class="btn mypallete lighten scrollDown hide-on-med-and-down waves-effect waves-light btn-to-map" data-target="#map-box"><i
+                class="large material-icons right">keyboard_arrow_down</i>Наши дома в Подмосковье</h2>
     </div>
 </div>
 <!-- map box -->
 <div class="section scrollspy fullHeight no-padding" id="map-box">
-    <h1 class="mypallete-text center map-header">Дома от застройщика - “Новый Адрес“</h1>
+    <h2 class="mypallete white-text center map-header section-title">Дома от застройщика - "Новый Адрес"</h2>
     <div class="map-wrapper">
         <div class="map-container hide-on-small-only" id="map"></div>
         <div class="map-filter">
@@ -96,28 +96,33 @@ JS;
     </div>
 </div>
 <!-- hot box -->
-<div class="section scrollspy" id="hot-box">
-    <div class="container">
-        <h2 class="mypallete-text center">Горячие предложения недвижимости - Дома</h2>
-        <div class="row">
-            <?php
-                foreach(Realty::getModelWithActionName('hot', 4) as $realty):
-                    ?>
-                    <?= $this->render('_hot_item', ['model' => $realty->model]) ?>
+<?php
+    $hotRealties = Realty::getModelWithActionName('hot', 4);
+    if(!empty($hotRealties)):
+        ?>
+        <div class="section scrollspy no-pad" id="hot-box">
+            <h2 class="mypallete white-text center section-title">Горячие предложения недвижимости - Дома</h2>
+            <div class="container">
+                <div class="row">
                     <?php
-                endforeach;
-            ?>
-        </div>
-        <div class="row">
-            <div class="col s12 m4 offset-m4">
-                <a href="<?= Url::to([
-                                         'site/catalog',
-                                         'Search[action_id]' => Action::findOne(['name' => 'hot'])->id
-                                     ]) ?>" class="btn fullWidth red waves-effect waves-light">Все горячие предложения</a>
+                        foreach($hotRealties as $realty):
+                            ?>
+                            <?= $this->render('_hot_item', ['model' => $realty->model]) ?>
+                            <?php
+                        endforeach;
+                    ?>
+                </div>
+                <div class="row">
+                    <div class="col s12 m4 offset-m4">
+                        <a href="<?= Url::to([
+                                                 'site/catalog',
+                                                 'Search[action_id]' => Action::findOne(['name' => 'hot'])->id
+                                             ]) ?>" class="btn fullWidth red waves-effect waves-light">Все горячие предложения</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    <?php endif; ?>
 <!-- videoreview box -->
 <?php if($videoReview): ?>
     <div class="sectionWithBg scrollspy" id="videoreview-box">
@@ -165,99 +170,10 @@ JS;
         </div>
     </div>
 <?php endif; ?>
-<!-- techology -->
-<div class="section mypallete white-text">
-    <div class="container">
-        <h2 class="center">Информация о нашем Агентстве недвижимости</h2>
-    </div>
-</div>
-<div class="section scrollspy" id="about">
-    <div class="container">
-        <p class="flow-text center">
-            10 причин, почему вам стоит покупать дома у нас
-            За много лет работы на рынке <strong>застройщик</strong> “Новый адрес” изучил потребности клиентов и точно знает, что предложить каждому
-            из вас. Мы перепробовали много технологий, материалов, способов строительства и выбрали самые лучшие, чтобы дарить вам комфорт и тепло.
-            Ищете новое жилье, в котором можно было бы находиться круглый год? Нет проблем! Обращайтесь к <strong>застройщику</strong> и <strong>агентству
-                недвижимости в Москве “Новый адрес”</strong>.
-        </p>
-        <ol>
-            <li>
-                Вы сможете выбрать для себя оптимальное соотношение “цена - качество”. Мы предлагаем множество объектов по доступной цене.
-            </li>
-            <li>
-                Вы будете жить в том районе, в котором сами захотите: у нас огромный выбор <strong>домов в Подмосковье</strong> - от Ленинградского до
-                Носовихинского
-                шоссе.
-            </li>
-            <li>
-                У вас будет определенное место жительства - на каждый участок есть право собственности, поэтому вы сможете прописаться в доме.
-            </li>
-            <li>
-                Вам не надо переживать за обустройство жилья, мы строим <strong>дома в Подмосковье</strong> “под ключ” - выполняем всю внутреннюю
-                отделку, заводим
-                коммуникации. Вам остается только завезти мебель и заселяться!
-            </li>
-            <li>После покупки, вы сможете жить в новом доме круглый год. Мы заботимся о том, чтобы у наших клиентов была возможность подъехать на
-                машине
-                ко всем объектам в любую погоду.
-            </li>
-            <li>С нашим <strong>агентством недвижимости в Москве</strong> вы подберете дом с той инфраструктурой, которая нужна именно вам. Хотите
-                жить рядом со
-                школой,
-                детским садом или рядом с вокзалом? Не проблема, найдем для вас подходящий объект!
-            </li>
-            <li>Вы можете быть уверены в качестве работы <strong>застройщика</strong>. Все <strong>дома в Подмосковье</strong> строятся по современным
-                европейским технологиям.
-            </li>
-            <li>Наше <strong>агентство недвижимости</strong> работает уже 10 лет на <strong>Московском</strong> рынке, и за это время зарекомендовало
-                себя как надежный партнер.
-            </li>
-            <li>С вами работают опытные специалисты: у нас вы можете получить юридическое сопровождение сделок, помощь в оформлении ипотеки и другие
-                услуги.
-            </li>
-            <li>За время нашей работы уже более ___ человек стали счастливыми обладателями комфортных <strong>домов в Подмосковье</strong>.</li>
-        </ol>
-
-    </div>
-</div>
+<!-- about -->
+<?= $this->render('about') ?>
 <!-- contacts box -->
-<div class="sectionWithBg fullHeight scrollspy" id="contacts">
-    <div class="sectionWithBg-wrap valign-wrapper">
-        <div class="container valign">
-            <div class="row contact-info mypallete-text">
-                <div class="col s12 m12 l5">
-                    <div class="row center-on-small-only">
-                        <p class="flow-text col s12 m6 l12"><i class="material-icons">phone_in_talk</i><strong>+7 000 000 00 00</strong></p>
-                        <p class="flow-text col s12 m6 l12"><i class="material-icons">mail</i><strong>example<span
-                                    class="r">@</span>email.com</strong></p>
-                    </div>
-                </div>
-                <div class="col s12 m12 l7">
-                    <p class="flow-text center">Если у Вас остались вопросы, напишите нам!</p>
-                    <?php $feedbackForm = ActiveForm::begin([
-                                                                'action' => [
-                                                                    'site/send-mail'
-                                                                ],
-                                                                'options' => [
-                                                                    'class' => 'feedback-email',
-                                                                    'id' => 'sendMail-form'
-                                                                ]
-
-                                                            ]) ?>
-                    <?= $feedbackForm->field($feedback, 'name', ['options' => ['class' => 'input-field col s12 m6']]) ?>
-                    <?= $feedbackForm->field($feedback, 'email', ['options' => ['class' => 'input-field col s12 m6']]) ?>
-                    <?= $feedbackForm->field($feedback, 'subject', ['options' => ['class' => 'input-field col s12']]) ?>
-                    <?= $feedbackForm->field($feedback, 'body', ['options' => ['class' => 'input-field col s12']])
-                                     ->textarea(['class' => 'materialize-textarea']) ?>
-                    <div class="input-field col s12">
-                        <button class="btn fullWidth mypallete waves-effect waves-light">Отправить сообщение</button>
-                    </div>
-                    <?php ActiveForm::end() ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?= $this->render('contact', ['feedback' => $feedback]) ?>
 <!-- footer -->
 
 

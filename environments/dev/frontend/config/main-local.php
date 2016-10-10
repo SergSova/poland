@@ -31,7 +31,8 @@
                     'catalog' => 'site/catalog',
                     'technology' => 'site/technology',
                     'realty/<id:\d+>' => 'site/realty',
-                    'video-review' => 'site/video-review'
+                    'video-review' => 'site/video-review',
+                    'sitemap.xml' => 'sitemap/index',
                 ],
             ]
 

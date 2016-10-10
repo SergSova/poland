@@ -3,15 +3,19 @@
     namespace common\models;
 
     use Yii;
+    use yii\behaviors\TimestampBehavior;
+    use yii\caching\DbDependency;
+    use yii\db\Expression;
+    use yii\debug\models\search\Db;
+    use yii\helpers\ArrayHelper;
     use yii\web\UploadedFile;
 
     /**
-     * This is the model class for table "nad_action".
+     * This is the model class for table "{{%action}}".
      *
      * @property integer       $id
      * @property string        $title
      * @property string        $name
-     * @property string        $description
      * @property string        $icon
      * @property integer       $date_start
      * @property integer       $date_end
@@ -31,63 +35,49 @@
          * @inheritdoc
          */
         public static function tableName(){
-            return 'nad_action';
+            return '{{%action}}';
         }
+
+        public function behaviors(){
+            return [
+                [
+                    'class'              => TimestampBehavior::className(),
+                    'createdAtAttribute' => 'create_at',
+                    'updatedAtAttribute' => 'update_at',
+                    'value'              => time(),
+                ],
+                ['class' => ActionBehavior::className()],
+            ];
+        }
+
 
         /**
          * @inheritdoc
          */
         public function rules(){
             return [
-                [
-                    [
-                        'title',
-                        'name',
-                        'description',
-                        'date_start',
-                        'date_end',
-                        'value'
-                    ],
-                    'required'
-                ],
-                [
-                    [
-                        'description',
-                        'status'
-                    ],
-                    'string'
-                ],
-                [
-                    [
-                        'date_start',
-                        'date_end'
-                    ],
-                    'integer'
-                ],
-                [
-                    ['title'],
-                    'string',
-                    'max' => 150
-                ],
-                [
-                    ['name'],
-                    'string',
-                    'max' => 50
-                ],
-                [
-                    [
-                        'icon',
-                        'value',
-                        'dateS',
-                        'dateE',
+                [['title', 'name',], 'required',],
+                ['status', 'string',],
+                ['status', 'default', 'value' => 'active',],
+                [['date_start', 'date_end',], 'integer',],
+                ['title', 'string', 'max' => 150,],
+                ['name', 'string', 'max' => 50,],
+                [['icon', 'value', 'dateS', 'dateE'], 'string', 'max' => 255,],
+                ['dateS', 'default', 'value' => date(DATE_ATOM, time()),],
+                ['dateE', 'default', 'value' => date(DATE_ATOM, strtotime('12-12-2036')),],
+                ['title', 'unique',],
+            ];
+        }
 
-                    ],
-                    'string',
-                    'max' => 255
-                ],
-                [
-                    ['title'],
-                    'unique'
+        public function scenarios(){
+            return [
+                'default' => [
+                    'title',
+                    'name',
+                    'status',
+                    'dateS',
+                    'dateE',
+                    'value',
                 ],
             ];
         }
@@ -97,18 +87,20 @@
          */
         public function attributeLabels(){
             return [
-                'id' => 'ID',
-                'title' => 'Название',
-                'name' => 'Name',
-                'description' => 'Описание',
-                'icon' => 'Иконка',
+                'id'         => 'ID',
+                'title'      => 'Название',
+                'name'       => 'Name',
+                'icon'       => 'Иконка',
                 'date_start' => 'Дата начала',
-                'date_end' => 'Дата окончания',
-                'value' => 'Значение',
-                'status' => 'Status',
-                'imgPath' => 'Иконка',
+                'date_end'   => 'Дата окончания',
+                'dateS'      => 'Дата начала',
+                'dateE'      => 'Дата окончания',
+                'value'      => 'Значение',
+                'status'     => 'Статус',
+                'imgPath'    => 'Иконка',
             ];
         }
+
 
         /**
          * @return \yii\db\ActiveQuery
@@ -122,57 +114,8 @@
          */
         public function getModels(){
             return $this->hasMany(Realty::className(), ['id' => 'model_id'])
-                        ->viaTable('nad_action_model', ['action_id' => 'id']);
+                        ->viaTable(ActionModel::tableName(), ['action_id' => 'id']);
         }
 
-        public function afterFind(){
-            $this->dateS = date('m/d/Y', $this->date_start);
-            $this->dateE = date('m/d/Y', $this->date_end);
-        }
 
-        public function beforeSave($insert){
-            $this->date_start = strtotime($this->dateS);
-            $this->date_end = strtotime($this->dateE);
-
-            return parent::beforeSave($insert);
-        }
-
-        /**
-         * Method to upload icon for action
-         * @return bool
-         */
-        public function upload(){
-            $file = UploadedFile::getInstance($this, 'icon');
-            if($file){
-                $basePath = Yii::getAlias('@wwwRoot');
-                $fileName = 'img/'.$file->name;
-                if(file_exists($basePath.DIRECTORY_SEPARATOR.$fileName)){
-                    $this->icon = $fileName;
-
-                    return true;
-                }else{
-                    $this->icon = $fileName;
-
-                    return $file->saveAs($basePath.DIRECTORY_SEPARATOR.$fileName);
-                }
-            }
-            $this->icon = $this->oldAttributes['icon'];
-
-            return true;
-        }
-
-        /**
-         * @return string generate full URL path to icon
-         */
-        public function getImgPath(){
-            return Yii::getAlias('@wwwUrl').DIRECTORY_SEPARATOR.$this->icon;
-        }
-
-        public static function getAll(){
-            return self::getDb()
-                         ->cache(function(){
-                             return self::find()
-                                          ->all();
-                         });
-        }
     }

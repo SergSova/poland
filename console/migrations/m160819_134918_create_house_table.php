@@ -33,14 +33,14 @@
                 'bath_count'            => $this->string(250),
             ]);
 
-            $this->addForeignKey('nad_house_ibfk_1', '{{%house}}', 'realty_id', '{{%realty}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_house_ibfk_1', '{{%house}}', 'realty_id', '{{%realty}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**
          * @inheritdoc
          */
         public function down(){
-            $this->dropForeignKey('nad_house_ibfk_1','{{%house}}');
+            $this->dropForeignKey('FK_house_ibfk_1','{{%house}}');
             $this->dropTable('{{%house}}');
         }
     }

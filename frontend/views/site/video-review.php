@@ -1,9 +1,15 @@
 <?php
     /**
-     * @var \yii\base\View               $this
+     * @var \yii\web\View               $this
      * @var \common\models\VideoReview[] $models
      */
+    $this->title = 'Дома в Московской области - видео обзоры';
+    $this->registerMetaTag([
+                               'name' => 'description',
+                               'content' => 'Видео обзоры домов от застройщика в Московской области, посмотреть дом снаружи и внутри - компания "Новый адрес"'
+                           ]);
 ?>
+<h1 class="center catalog-title-h1">Дома от застройщика - видео обзоры</h1>
 <div class="container">
     <?php
         if(!empty($models)):

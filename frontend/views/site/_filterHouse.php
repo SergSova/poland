@@ -23,7 +23,6 @@
                                          'action' => 'catalog',
                                          'options' => [
                                              'data-pjax' => (Yii::$app->controller->action->id == 'catalog') ? true : false,
-//                                             'class' => 'filter-form'
                                          ],
                                          'id'=>'form-house'
                                      ]); ?>

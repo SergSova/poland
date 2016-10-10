@@ -5,9 +5,9 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=poland',
             'username' => 'root',
-            'password' => '',
+            'password' => '1234',
             'charset' => 'utf8',
-            'tablePrefix' => 'nad_',
+            'tablePrefix' => 'pol_',
             'enableSchemaCache' => true,
             'enableQueryCache' => true
         ],

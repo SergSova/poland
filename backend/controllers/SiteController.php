@@ -4,7 +4,6 @@
     use backend\models\EmailChangeRequestForm;
     use backend\models\LoginForm;
     use backend\models\PasswordResetRequestForm;
-    use backend\models\RegistrationForm;
     use backend\models\ResetPasswordForm;
     use common\models\Callback;
     use common\models\Feedback;
@@ -176,12 +175,5 @@
             Yii::$app->session->setFlash('success', 'Новая почта была сохранена.');
 
             return $this->goHome();
-        }
-
-        public function actionRegistration(){
-            $model = new RegistrationForm();
-            if($model->load()&&$model->registr()){
-
-            }
         }
     }

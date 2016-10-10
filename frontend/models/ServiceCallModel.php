@@ -9,7 +9,6 @@
         public function rules(){
             return [
                 ['phone', 'required'],
-                ['phone', 'match', 'pattern' => '/^\+?[78]{1}\d{10}$/i','message' => 'Не правильный формат телефона +7(8) 000 000 00 00'],
             ];
         }
 

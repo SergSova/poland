@@ -34,13 +34,14 @@
                 'photos'            => $this->text()
             ]);
 
-            $this->addForeignKey('nad_apartment_ibfk_1', '{{%apartment}}', 'realty_id', '{{%realty}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_apartment_ibfk_1', '{{%apartment}}', 'realty_id', '{{%realty}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**
          * @inheritdoc
          */
         public function down(){
+            $this->dropForeignKey('FK_apartment_ibfk_1','{{%apartment}}');
             $this->dropTable('{{%apartment}}');
         }
     }

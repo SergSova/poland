@@ -12,10 +12,19 @@
     use macgyer\yii2materializecss\widgets\Alert;
     use yii\helpers\Url;
 
+
+
     AppAsset::register($this);
 
     $feedbackModel = new Feedback();
     $callbackModel = new Callback();
+
+    $this->registerMetaTag([
+                               'name' => 'yandex-verification',
+                               'content' => 'fe1be1f85741d159'
+                           ]);
+
+    $this->registerJs('(function (d, w, c) {(w[c] = w[c] || []).push(function() {try {w.yaCounter39973625 = new Ya.Metrika({id:39973625, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true});} catch(e) { }});var n = d.getElementsByTagName("script")[0],s = d.createElement("script"),f = function () { n.parentNode.insertBefore(s, n); };s.type = "text/javascript";s.async = true;s.src = "https://mc.yandex.ru/metrika/watch.js";if (w.opera == "[object Opera]") {d.addEventListener("DOMContentLoaded", f, false);} else { f(); }})(document, window, "yandex_metrika_callbacks");', \yii\web\View::POS_HEAD);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -24,8 +33,10 @@
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <noscript><div><img src="https://mc.yandex.ru/watch/39973625" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
     <?php $this->head() ?>
 </head>
 
@@ -69,7 +80,7 @@
                 'label' => 'О нас',
                 'url' => [
                     'site/index',
-                    '#'=>'about',
+                    '#' => 'about',
                 ],
                 'options' => ['class' => 'scrollTo']
 
@@ -107,7 +118,6 @@
 </header>
 
 <main class="content">
-    <?= Alert::widget() ?>
     <?= $content ?>
 </main>
 

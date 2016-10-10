@@ -16,12 +16,14 @@
     <div class="card catalog-item hoverable">
         <a href="<?= Url::to([
                                  'site/realty',
-                                 'id' => $model->id
+                                 'id' => $model->id,
                              ]) ?>" class="black-text">
             <div class="card-image">
                 <div class="action-ico">
                     <?php foreach($model->actions as $action): ?>
-                        <img src="<?= $action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
+                        <?php if($action->status == 'active'): ?>
+                            <img src="<?= $action->imgPath ?>" class="tooltipped" data-tooltip="<?= $action->title ?>">
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
                 <img class="responsive-img"
@@ -37,7 +39,7 @@
                     <p class="subtitle"><?= $model->address ?></p>
                 </div>
                 <div class="card-description">
-                    <?= $model->short_description ?>
+                    <p><?= $model->br_short_description ?></p>
                 </div>
             </div>
             <button type="button" class="btn mypallete fullWidth waves-effect waves-light">Подробнее</button>

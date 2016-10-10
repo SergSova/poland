@@ -15,7 +15,6 @@
                              'id',
                              'title',
                              'name',
-                             'description',
                              'imgPath:image',
                              'date_start:date',
                              'date_end:date',

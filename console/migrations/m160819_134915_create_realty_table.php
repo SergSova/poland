@@ -25,21 +25,23 @@
                                           ->notNull(),
                 'full_description'     => $this->text()
                                           ->notNull(),
-                'status'          => "enum('active','inactive','sale','deposit') NOT NULL DEFAULT 'active'"
+                'status'          => "enum('active','inactive','sale','deposit') NOT NULL DEFAULT 'active'",
+                'create_at'          => $this->integer(),
+                'update_at'          => $this->integer(),
             ]);
 
-            $this->addForeignKey('nad_realty_ibfk_1', '{{%realty}}', 'realty_type_id', '{{%realty_type}}', 'id', 'SET NULL', 'CASCADE');
-            $this->addForeignKey('nad_realty_ibfk_2', '{{%realty}}', 'service_type_id', '{{%service_type}}', 'id', 'SET NULL', 'CASCADE');
-            $this->addForeignKey('nad_realty_ibfk_3', '{{%realty}}', 'district_id', '{{%district}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_realty_ibfk_1', '{{%realty}}', 'realty_type_id', '{{%realty_type}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_realty_ibfk_2', '{{%realty}}', 'service_type_id', '{{%service_type}}', 'id', 'SET NULL', 'CASCADE');
+            $this->addForeignKey('FK_realty_ibfk_3', '{{%realty}}', 'district_id', '{{%district}}', 'id', 'SET NULL', 'CASCADE');
         }
 
         /**
          * @inheritdoc
          */
         public function down(){
-            $this->dropForeignKey('nad_realty_ibfk_1', '{{%realty}}');
-            $this->dropForeignKey('nad_realty_ibfk_2', '{{%realty}}');
-            $this->dropForeignKey('nad_realty_ibfk_3', '{{%realty}}');
+            $this->dropForeignKey('FK_realty_ibfk_1', '{{%realty}}');
+            $this->dropForeignKey('FK_realty_ibfk_2', '{{%realty}}');
+            $this->dropForeignKey('FK_realty_ibfk_3', '{{%realty}}');
             $this->dropTable('{{%realty}}');
         }
     }

@@ -16,6 +16,8 @@
                 'email'   => $this->string(150),
                 'subject' => $this->string(250),
                 'body'    => $this->text(),
+                'create_at'          => $this->integer(),
+                'update_at'          => $this->integer(),
             ]);
         }
 

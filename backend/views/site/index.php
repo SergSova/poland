@@ -28,7 +28,7 @@
             <a href="<?= Url::to(['video-review/create']) ?>" class="list-group-item">Добавить видео Обзор</a>
         </div>
     </div>
-    <div class="col-sm-12 col-md-4 col-lg-3">
+    <div class="col-sm-12 col-md-4 col-lg-5">
         <p>Callback</p>
         <?= GridView::widget([
                                  'dataProvider' => $callbackProvider,
@@ -49,7 +49,7 @@
                                  ],
                              ]); ?>
     </div>
-    <div class="col-sm-12 col-md-4 col-lg-3">
+    <div class="col-sm-12 col-md-4 col-lg-4">
         <p>Feedback</p>
         <?=GridView::widget([
                                  'dataProvider' => $feedbackProvider,

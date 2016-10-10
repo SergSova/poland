@@ -21,8 +21,11 @@
             $model = new Action();
             $model->status = 'inactive';
 
-            if($model->load(Yii::$app->request->post()) && $model->upload() && $model->save()){
-                return $this->redirect(['view','id' => $model->id]);
+            if($model->load(Yii::$app->request->post())&& $model->save()){
+                return $this->redirect([
+                                           'view',
+                                           'id' => $model->id
+                                       ]);
             }
 
             return $this->render('create_action', ['model' => $model]);
@@ -31,8 +34,11 @@
         public function actionUpdate($id){
             $model = Action::findOne($id);
 
-            if($model->load(Yii::$app->request->post()) && $model->upload() && $model->save()){
-                return $this->redirect(['view','id' => $model->id]);
+            if($model->load(Yii::$app->request->post()) && $model->save()){
+                return $this->redirect([
+                                           'view',
+                                           'id' => $model->id
+                                       ]);
             }
 
             return $this->render('update_action', ['model' => $model]);
@@ -53,7 +59,10 @@
         public function actionDelete($id){
             $model = Action::findOne($id);
             if(count($model->models) > 0){
-                return $this->redirect(['view','id' => $id]);
+                return $this->redirect([
+                                           'view',
+                                           'id' => $id
+                                       ]);
             }
             $model->delete();
 
@@ -61,10 +70,14 @@
         }
 
         public function actionRemoveModel($action_model_id){
-            ActionModel::findOne($action_model_id)
-                       ->delete();
+            $model = ActionModel::findOne($action_model_id);
+            $id = $model->action_id;
+            $model->delete();
 
-            return $this->redirect('action/index');
+            return $this->redirect([
+                                       'view',
+                                       'id' => $id
+                                   ]);
         }
 
 

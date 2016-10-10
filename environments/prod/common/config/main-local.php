@@ -3,11 +3,11 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=new_address',
+            'dsn' => 'mysql:host=localhost;dbname=poland',
             'username' => 'root',
-            'password' => '',
+            'password' => '1234',
             'charset' => 'utf8',
-            'tablePrefix'=>'nad_',
+            'tablePrefix'=>'pol_',
             'enableQueryCache' => true,
             'enableSchemaCache' => true,
         ],

@@ -1,25 +1,39 @@
 <?php
 
 namespace common\models;
+use yii\behaviors\TimestampBehavior;
 
 /**
- * This is the model class for table "nad_action_model".
+ * This is the model class for table "{{%action_model}}".
  *
  * @property integer $id
  * @property integer $model_id
  * @property integer $action_id
+ * @property integer $create_at
+ * @property integer $update_at
+
  *
  * @property Action $action
  * @property Realty $model
  */
 class ActionModel extends \yii\db\ActiveRecord
 {
+    public function behaviors(){
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'create_at',
+                'updatedAtAttribute' => 'update_at',
+                'value' => time(),
+            ],
+        ];
+    }
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'nad_action_model';
+        return '{{%action_model}}';
     }
 
     /**
@@ -33,6 +47,7 @@ class ActionModel extends \yii\db\ActiveRecord
             [['model_id', 'action_id'], 'unique', 'targetAttribute' => ['model_id', 'action_id'], 'message' => 'The combination of Model ID and Action ID has already been taken.'],
             [['action_id'], 'exist', 'skipOnError' => true, 'targetClass' => Action::className(), 'targetAttribute' => ['action_id' => 'id']],
             [['model_id'], 'exist', 'skipOnError' => true, 'targetClass' => Realty::className(), 'targetAttribute' => ['model_id' => 'id']],
+            [['create_at','update_at'],'safe']
         ];
     }
 

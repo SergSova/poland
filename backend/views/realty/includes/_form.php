@@ -1,6 +1,7 @@
 <?php
 
     use backend\widgets\MapWidget\FormMapWidget;
+    use common\models\Action;
     use common\models\District;
     use common\models\ServiceType;
     use yii\helpers\ArrayHelper;
@@ -25,8 +26,7 @@
         $zoom = 18;
     }
 
-    $actions = \common\models\Action::find()
-                                    ->all();
+    $actions = Action::getAll();
 ?>
 <?php $form = ActiveForm::begin([
                                     'options' => [
@@ -105,17 +105,29 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Акции</div>
             <div class="panel-body">
-                <?php foreach($actions as $action): ?>
-                    <?php if($action->name == 'discount'): ?>
-                        <?= Html::radio('actions['.$action->name.']', $model->baseModel->getActionModels()
-                                                                                     ->where(['action_id' => $action->id])
-                                                                                     ->exists(), ['label' => $action->title,'value'=>$action->id]) ?>
+                <?php
+                    $flag = true;
+                    foreach($actions as $action): ?>
+                        <?php if($action->name == 'discount'): ?>
+                            <?php
+                            if($discountExist = $model->baseModel->getActionModels()->where(['action_id' => $action->id])->exists()){
+                                $flag = false;
+                            }
+                            ?>
+                            <?= Html::radio('actions['.$action->name.']', $discountExist, [
+                                'label' => $action->title,
+                                'value' => $action->id
+                            ]) ?>
                         <?php else: ?>
-                        <?= Html::checkbox('actions['.$action->name.']', $model->baseModel->getActionModels()
-                                                                                        ->where(['action_id' => $action->id])
-                                                                                        ->exists(), ['label' => $action->title,'value'=>$action->id]) ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
+                            <?= Html::checkbox('actions['.$action->name.']', $model->baseModel->getActionModels()
+                                                                                              ->where(['action_id' => $action->id])
+                                                                                              ->exists(), [
+                                                   'label' => $action->title,
+                                                   'value' => $action->id
+                                               ]) ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?= Html::radio('actions[discount]', $flag, ['label' => 'Без скидки','value' => -1]) ?>
             </div>
         </div>
     </div>

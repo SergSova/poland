@@ -1,8 +1,12 @@
 $("select").material_select();
-$('#filter-box .filter-box').pushpin({
-    top: $('#filter-box').offset().top,
-    offset: $('#filter-box').offset().top
-});
+if($(window).height() > $('#filter-box').height() + $('#filter-box').offset().top){
+    $('#filter-box .filter-box').pushpin({
+        top: $('#filter-box').offset().top,
+        offset: $('#filter-box').offset().top,
+        bottom: $('body').height() - $('#filter-box').height()
+    });
+}
+
 
 $("#showFilter").sideNav({
     menuWidth: 320,

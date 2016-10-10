@@ -13,7 +13,6 @@
     use Yii;
     use yii\caching\ChainedDependency;
     use yii\caching\DbDependency;
-    use yii\db\Query;
     use yii\filters\HttpCache;
     use yii\filters\PageCache;
     use yii\web\Controller;
@@ -35,30 +34,42 @@
                 ],
                 [
                     'class' => PageCache::className(),
-                    'only' => ['index','catalog'],
+                    'only' => ['index', 'catalog'],
                     'duration' => 3600 * 24 * 30,
                     'dependency' => [
                         'class' => ChainedDependency::className(),
                         'dependencies' => [
                             new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Realty::tableName()]),
                             new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.Action::tableName()]),
+                            new DbDependency(['sql' => 'SELECT MAX(update_at) FROM '.ActionModel::tableName()]),
                         ],
                     ],
+                    'variations' => [isset(Yii::$app->request->queryParams) ? Yii::$app->request->queryParams : null]
                 ],
-                //                [
-                //                    'class' => HttpCache::className(),
-                //                    'only' => ['realty'],
-                //                    'etagSeed' => function($action, $params){
-                //                        $realty = Realty::findOne(Yii::$app->request->get('id'));
-                //                        return serialize([
-                //                                             $realty->address,
-                //                                             $realty->price,
-                //                                             $realty->status,
-                //                                             $realty->short_description,
-                //                                             $realty->full_description,
-                //                                         ]);
-                //                    },
-                //                ],
+                [
+                    'class' => HttpCache::className(),
+                    'only' => ['realty'],
+                    'etagSeed' => function(){
+                        $model = Realty::findOne(Yii::$app->request->get('id'));
+
+                        return serialize([
+                                             $model->update_at,
+                                             $model->getActions()
+                                                   ->select('name')
+                                                   ->column()
+                                         ]);
+                    }
+                ],
+                [
+                    'class' => HttpCache::className(),
+                    'only' => ['service'],
+                    'lastModified' => function(){
+                        $modified = Service::find()
+                                           ->max('update_at');
+
+                        return $modified ? $modified : time();
+                    }
+                ],
             ];
         }
 
@@ -73,12 +84,7 @@
         public function actionIndex(){
             return $this->render('landing', [
                 'feedback' => new Feedback(),
-                'videoReview' => VideoReview::getDb()
-                                            ->cache(function(){
-                                                return VideoReview::find()
-                                                                  ->limit(1)
-                                                                  ->one();
-                                            })
+                'videoReview' => VideoReview::getAll(1)
             ]);
         }
 
@@ -106,13 +112,7 @@
         }
 
         public function actionVideoReview(){
-            return $this->render('video-review', [
-                'models' => VideoReview::getDb()
-                                       ->cache(function(){
-                                           return VideoReview:: find()
-                                                             ->all();
-                                       })
-            ]);
+            return $this->render('video-review', ['models' => VideoReview::getAll()]);
         }
 
         public function actionFeedback($m){
@@ -160,13 +160,7 @@
 
         public function actionService($id = null){
             if(is_null($id)){
-                return $this->render('service', [
-                    'model' => Service::getDb()
-                                      ->cache(function(){
-                                          return Service::find()
-                                                        ->all();
-                                      })
-                ]);
+                return $this->render('service', ['model' => Service::getAll()]);
             }
 
             return $this->render('service_item', ['model' => Service::findOne($id)]);

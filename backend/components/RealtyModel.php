@@ -5,8 +5,8 @@
     use common\models\Apartment;
     use common\models\House;
     use common\models\Realty;
+    use Exception;
     use Yii;
-    use yii\base\Exception;
     use yii\base\Object;
     use yii\helpers\FileHelper;
 
@@ -119,8 +119,19 @@
 
         public function delete(){
             FileHelper::removeDirectory(Yii::getAlias('@storage').DIRECTORY_SEPARATOR.'catalog'.DIRECTORY_SEPARATOR.$this->baseModel->id);
-            $this->entityModel->delete();
-            $this->baseModel->delete();
+            $transaction = Yii::$app->db->beginTransaction();
+            try{
+                if(is_null($this->entityModel)){
+                    throw new Exception('entity null');
+                }
+                if(!$this->entityModel->delete() || !$this->baseModel->delete()){
+                    throw new Exception('error delete');
+                }
+                $transaction->commit();
+            }catch(Exception $e){
+                $transaction->rollBack();
+                Yii::$app->session->set('fl', $e->getMessage());
+            }
         }
 
         protected function validate(){
@@ -141,21 +152,41 @@
 
         private function addModelToAction(){
             $actions = Yii::$app->request->post('actions');
-            foreach($actions as $action){
+
+            foreach($actions as $action_id){
+                if($action_id == -1){
+                    $disc_id = $this->baseModel->getActions()
+                                               ->where(['name' => 'discount'])
+                                               ->one()->id;
+                    if(!is_null($disc_id)){
+                        ActionModel::findOne([
+                                                 'model_id' => $this->baseModel->id,
+                                                 'action_id' => $disc_id
+                                             ])
+                                   ->delete();
+                    }
+                    continue;
+                }
                 if(!$this->baseModel->getActionModels()
-                                    ->where(['action_id' => $action])
+                                    ->where(['action_id' => $action_id])
                                     ->exists()
                 ){
                     $actionModel = new ActionModel([
                                                        'model_id' => $this->baseModel->id,
-                                                       'action_id' => $action
+                                                       'action_id' => $action_id
                                                    ]);
-                    if(!$actionModel->save()){
+                    if(!$actionModel->save(false)){
                         throw new \Exception($actionModel->getErrors());
                     }
                 }
             }
-            $removedAction = $this->baseModel->getActionModels()->where(['not in','action_id',$actions])->all();
+            $removedAction = $this->baseModel->getActionModels()
+                                             ->where([
+                                                         'not in',
+                                                         'action_id',
+                                                         $actions
+                                                     ])
+                                             ->all();
             foreach($removedAction as $item){
                 $item->delete();
             }

@@ -14,7 +14,9 @@
                 'id'      => $this->primaryKey(),
                 'name'    => $this->string(50),
                 'subject' => $this->string(50),
-                'phone'   => $this->string(25)
+                'phone'   => $this->string(25),
+                'create_at'          => $this->integer(),
+                'update_at'          => $this->integer(),
             ]);
         }
 

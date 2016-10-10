@@ -88,7 +88,7 @@
                            ->joinWith([
                                           'house h',
                                           'apartment ap'
-                                      ]);
+                                      ])->orderBy(['create_at'=>SORT_DESC]);
             $query->where([
                               'status' => [
                                   'active',

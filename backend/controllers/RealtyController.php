@@ -53,16 +53,28 @@
             $searchModel = new RealtySearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+            $this->getFlash();
+
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
         }
 
+        public function getFlash(){
+            $flash = Yii::$app->session->get('fl');
+            if(!is_null($flash)){
+                Yii::$app->session->setFlash('error', $flash);
+                Yii::$app->session->remove('fl');
+            }
+        }
+
         public function actionView($id){
             $realty = $this->findRealty($id);
             $realtyType = $realty->realtyType->realty_table;
             $model = new RealtyModel($realty, $realty->$realtyType);
+
+            $this->getFlash();
 
             return $this->render('view', [
                 'model' => $model,
@@ -72,7 +84,7 @@
 
         public function actionCreate($realtyType){
             $realtyTypeClass = 'common\models\\'.ucfirst($realtyType);
-            $realtyTypeModel = RealtyType::findOne(['realty_table'=> $realtyType]);
+            $realtyTypeModel = RealtyType::findOne(['realty_table' => $realtyType]);
             if(is_null($realtyTypeModel)){
                 throw new NotFoundHttpException('The requested page does not exist.');
             }
@@ -107,10 +119,10 @@
                     'realtyType' => $realtyType
                 ]);
             }
-
         }
 
         public function actionDelete($id){
+            $ref = Yii::$app->request->referrer;
             $realty = $this->findRealty($id);
             $realtyType = $realty->realtyType->realty_table;
             $model = new RealtyModel($realty, $realty->$realtyType);
@@ -140,11 +152,11 @@
             $path = Yii::$app->request->post('path');
             if($path){
                 RealtyPhoto::deletePhoto($path);
+
                 return true;
             }
 
             return false;
-
         }
 
         protected function findRealty($id){
