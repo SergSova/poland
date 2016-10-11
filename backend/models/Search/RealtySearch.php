@@ -28,7 +28,7 @@
                         'id',
                         'price',
                     ],
-                    'integer'
+                    'integer',
                 ],
                 [
                     [
@@ -38,7 +38,7 @@
                         'serviceType.name',
                         'district.name',
                     ],
-                    'safe'
+                    'safe',
                 ],
             ];
         }
@@ -63,7 +63,7 @@
                            ->joinWith([
                                           'realtyType rt',
                                           'serviceType st',
-                                          'district d'
+                                          'district d',
                                       ]);
 
             // add conditions that should always apply here
@@ -81,42 +81,43 @@
             }
 
             // grid filtering conditions
+            $query->andFilterWhere(['author_id' => $this->author_id]);
             $query->andFilterWhere([
                                        $this->tableName().'.id' => $this->id,
-                                       'status' => $this->status
+                                       'status'                 => $this->status,
                                    ])
                   ->andFilterWhere([
                                        'like',
                                        'address',
-                                       $this->address
+                                       $this->address,
                                    ])
                   ->andFilterWhere([
                                        'LIKE',
                                        'rt.name',
-                                       $this->getAttribute('realtyType.name')
+                                       $this->getAttribute('realtyType.name'),
                                    ])
                   ->andFilterWhere([
                                        'LIKE',
                                        'st.name',
-                                       $this->getAttribute('serviceType.name')
+                                       $this->getAttribute('serviceType.name'),
                                    ])
                   ->andFilterWhere([
                                        'LIKE',
                                        'd.name',
-                                       $this->getAttribute('district.name')
+                                       $this->getAttribute('district.name'),
                                    ]);
             //grid sorting conditions for relations
             $dataProvider->sort->attributes['realtyType.name'] = [
-                'asc' => ['rt.name' => SORT_ASC],
-                'desc' => ['rt.name' => SORT_DESC]
+                'asc'  => ['rt.name' => SORT_ASC],
+                'desc' => ['rt.name' => SORT_DESC],
             ];
             $dataProvider->sort->attributes['serviceType.name'] = [
-                'asc' => ['st.name' => SORT_ASC],
-                'desc' => ['st.name' => SORT_DESC]
+                'asc'  => ['st.name' => SORT_ASC],
+                'desc' => ['st.name' => SORT_DESC],
             ];
             $dataProvider->sort->attributes['district.name'] = [
-                'asc' => ['d.name' => SORT_ASC],
-                'desc' => ['d.name' => SORT_DESC]
+                'asc'  => ['d.name' => SORT_ASC],
+                'desc' => ['d.name' => SORT_DESC],
             ];
 
             return $dataProvider;

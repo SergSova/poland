@@ -51,6 +51,7 @@
 
         public function actionIndex(){
             $searchModel = new RealtySearch();
+            $searchModel->author_id = Yii::$app->user->id;
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             $this->getFlash();

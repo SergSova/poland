@@ -13,6 +13,7 @@
      * This is the model class for table "{{%realty}}".
      *
      * @property integer       $id
+     * @property integer       $author_id
      * @property integer       $realty_type_id
      * @property integer       $service_type_id
      * @property integer       $district_id
@@ -25,14 +26,14 @@
      * @property integer       $create_at
      * @property integer       $update_at
      *
-     *
      * @property ActionModel[] $actionModels
      * @property Action[]      $actions
-     * @property Apartment     $apartment
-     * @property House         $house
+     * @property Apartment[]   $apartments
+     * @property House[]       $houses
+     * @property User          $author
+     * @property District      $district
      * @property RealtyType    $realtyType
      * @property ServiceType   $serviceType
-     * @property District      $district
      *
      * @method getActionForModel(ActiveRecord $this) parses and processes model->actions, generates @property newPrice if the model is linked to
      *         action discount
@@ -63,12 +64,15 @@
             return [
                 [
                     [
+                        'author_id',
                         'realty_type_id',
                         'service_type_id',
                         'district_id',
-                        'price'
+                        'price',
+                        'create_at',
+                        'update_at',
                     ],
-                    'integer'
+                    'integer',
                 ],
                 [
                     [
@@ -79,46 +83,47 @@
                         'address',
                         'map_coord',
                         'short_description',
-                        'full_description'
+                        'full_description',
                     ],
-                    'required'
+                    'required',
                 ],
                 [
                     [
                         'short_description',
                         'full_description',
-                        'status'
+                        'status',
                     ],
-                    'string'
+                    'string',
                 ],
                 [
                     [
                         'address',
-                        'map_coord'
+                        'map_coord',
                     ],
                     'string',
-                    'max' => 255
+                    'max' => 255,
                 ],
+                [['author_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author_id' => 'id']],
                 [
                     ['realty_type_id'],
                     'exist',
-                    'skipOnError' => true,
-                    'targetClass' => RealtyType::className(),
-                    'targetAttribute' => ['realty_type_id' => 'id']
+                    'skipOnError'     => true,
+                    'targetClass'     => RealtyType::className(),
+                    'targetAttribute' => ['realty_type_id' => 'id'],
                 ],
                 [
                     ['service_type_id'],
                     'exist',
-                    'skipOnError' => true,
-                    'targetClass' => ServiceType::className(),
-                    'targetAttribute' => ['service_type_id' => 'id']
+                    'skipOnError'     => true,
+                    'targetClass'     => ServiceType::className(),
+                    'targetAttribute' => ['service_type_id' => 'id'],
                 ],
                 [
                     ['district_id'],
                     'exist',
-                    'skipOnError' => true,
-                    'targetClass' => District::className(),
-                    'targetAttribute' => ['district_id' => 'id']
+                    'skipOnError'     => true,
+                    'targetClass'     => District::className(),
+                    'targetAttribute' => ['district_id' => 'id'],
                 ],
             ];
         }
@@ -128,16 +133,16 @@
          */
         public function attributeLabels(){
             return [
-                'id' => 'ID',
-                'realty_type_id' => 'Realty Type ID',
-                'service_type_id' => 'Тип услуги',
-                'district_id' => 'Район/направление',
-                'price' => 'Цена',
-                'address' => 'Адрес',
-                'map_coord' => 'Map Coord',
+                'id'                => 'ID',
+                'realty_type_id'    => 'Realty Type ID',
+                'service_type_id'   => 'Тип услуги',
+                'district_id'       => 'Район/направление',
+                'price'             => 'Цена',
+                'address'           => 'Адрес',
+                'map_coord'         => 'Map Coord',
                 'short_description' => 'Краткое описание',
-                'full_description' => 'Полное описание',
-                'status' => 'Статус',
+                'full_description'  => 'Полное описание',
+                'status'            => 'Статус',
             ];
         }
 
@@ -169,6 +174,13 @@
          */
         public function getHouse(){
             return $this->hasOne(House::className(), ['realty_id' => 'id']);
+        }
+
+        /**
+         * @return \yii\db\ActiveQuery
+         */
+        public function getAuthor(){
+            return $this->hasOne(User::className(), ['id' => 'author_id']);
         }
 
         /**
@@ -220,8 +232,8 @@
                                                 ->where([
                                                             'status' => [
                                                                 'active',
-                                                                'deposit'
-                                                            ]
+                                                                'deposit',
+                                                            ],
                                                         ])
                                                 ->orderBy(['id' => SORT_DESC])
                                                 ->limit($limit)
@@ -249,8 +261,8 @@
                                          ->where([
                                                      'status' => [
                                                          'active',
-                                                         'deposit'
-                                                     ]
+                                                         'deposit',
+                                                     ],
                                                  ])
                                          ->all();
                           });
@@ -261,9 +273,9 @@
                 $markersData[] = [
                     'position' => [
                         'lat' => $coord[0] * 1,
-                        'lng' => $coord[1] * 1
+                        'lng' => $coord[1] * 1,
                     ],
-                    'content' => $content
+                    'content'  => $content,
                 ];
             }
 
@@ -281,6 +293,7 @@
         public function getBr_short_description(){
             return nl2br($this->short_description);
         }
+
         public function getBr_full_description(){
             return nl2br($this->full_description);
         }
