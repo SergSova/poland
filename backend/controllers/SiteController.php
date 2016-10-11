@@ -4,9 +4,11 @@
     use backend\models\form\EmailChangeRequestForm;
     use backend\models\form\LoginForm;
     use backend\models\form\PasswordResetRequestForm;
+    use backend\models\form\RegistrationForm;
     use backend\models\form\ResetPasswordForm;
     use common\models\Callback;
     use common\models\Feedback;
+    use common\models\User;
     use Yii;
     use yii\base\InvalidParamException;
     use yii\data\ActiveDataProvider;
@@ -14,6 +16,7 @@
     use yii\web\Controller;
     use yii\filters\VerbFilter;
     use yii\filters\AccessControl;
+    use yii\web\NotFoundHttpException;
 
     /**
      * Site controller
@@ -31,6 +34,8 @@
                                 'error',
                                 'request-password-reset',
                                 'reset-password',
+                                'register',
+                                'confirm-registration',
                             ],
                             'allow'   => true,
                         ],
@@ -41,7 +46,7 @@
                                 'profile',
                                 'reset-password-current',
                                 'change-email-token',
-                                'request-change-email'
+                                'request-change-email',
                             ],
                             'allow'   => true,
                             'roles'   => ['@'],
@@ -71,11 +76,11 @@
 
         public function actionIndex(){
             $callbackProvider = new ActiveDataProvider([
-                                                        'query' => Callback::find(),
-                                                    ]);
+                                                           'query' => Callback::find(),
+                                                       ]);
             $feedbackProvider = new ActiveDataProvider([
-                                                        'query' => Feedback::find(),
-                                                    ]);
+                                                           'query' => Feedback::find(),
+                                                       ]);
 
             return $this->render('index', ['callbackProvider' => $callbackProvider, 'feedbackProvider' => $feedbackProvider]);
         }
@@ -99,6 +104,23 @@
             Yii::$app->user->logout();
 
             return $this->goHome();
+        }
+
+        public function actionRegister(){
+            $model = new RegistrationForm();
+            if($model->load(Yii::$app->request->post()) && $model->register()){
+                return $this->redirect(['login']);
+            }
+
+            return $this->render('registration', ['model' => $model]);
+        }
+
+        public function actionConfirmRegistration($token){
+            if(!RegistrationForm::confirm($token)){
+                throw new NotFoundHttpException('The requested page does not exist.');
+            }
+
+            return $this->redirect(['index']);
         }
 
         public function actionResetPasswordCurrent(){
